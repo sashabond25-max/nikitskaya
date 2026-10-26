@@ -77,6 +77,12 @@ h1 { font-size: 20px; font-weight: 500; margin-bottom: 6px; color: #3a3a3a; }
 .popup-day { font-size: 11px; color: #aaa; margin-left: 6px; }
 .popup-onl { font-size: 12px; color: #185FA5; margin-top: 8px; display: none; }
 
+.notes { margin-top: 18px; background: #fff; border: 1px solid #ddd; border-radius: 12px; padding: 14px 18px; }
+.notes-title { font-size: 13px; font-weight: 600; color: #5C6937; margin-bottom: 6px; }
+.notes ul { list-style: none; }
+.notes li { font-size: 13px; color: #3a3a3a; line-height: 1.6; }
+.notes li::before { content: "•"; color: #5C6937; margin-right: 8px; }
+
 @media (max-width: 600px) { body { padding: 12px; } }
 </style>
 </head>
@@ -97,6 +103,8 @@ h1 { font-size: 20px; font-weight: 500; margin-bottom: 6px; color: #3a3a3a; }
 <div class="scroll"><div class="schedule" id="schedule"></div></div>
 
 <div class="legend" id="legend"></div>
+
+<div class="notes"><div class="notes-title">Комментарии</div><ul><li>Пн 14:00 — постоянный индив</li></ul></div>
 
 <script>
 const START_H = 6, END_H = 22, TOTAL = (END_H - START_H) * 60, H = 960;
