@@ -1794,14 +1794,15 @@ const ADMINS_WEEKLY={
     {name:'Вика',   abon:149200,tovar:11000,shifts:5, shifts_morn:5,shifts_eve:0,shifts_p:5, newQty:2,newRub:21200},
   ],
 };
-// Рейтинг = среднее место по 4 категориям: услуги/смену, товары/смену, кол-во новичков, сумма новичкам.
+// Рейтинг = среднее место по 3 категориям: услуги/смену, товары/смену, кол-во проданных First (шт).
 // При равенстве значений место общее (1-1-2), при равенстве среднего места — приоритет по обороту.
+// Карточка «Лидер» — максимум продаж в смену ((услуги + товары) / смены), не первое место рейтинга.
 function prepAdmins(arr){
   const a=arr.map(d=>({...d,total:d.abon+d.tovar,
     perShift:d.shifts>0?Math.round((d.abon+d.tovar)/d.shifts):0,
     abonPS:d.shifts>0?d.abon/d.shifts:0,
     tovarPS:d.shifts>0?d.tovar/d.shifts:0}));
-  const CATS=['abonPS','tovarPS','newQty','newRub'];
+  const CATS=['abonPS','tovarPS','newQty'];
   CATS.forEach(k=>{const vals=[...new Set(a.map(x=>x[k]||0))].sort((p,q)=>q-p);a.forEach(x=>{x['pl_'+k]=vals.indexOf(x[k]||0)+1;});});
   a.forEach(x=>{x.avgPlace=CATS.reduce((s,k)=>s+x['pl_'+k],0)/CATS.length;});
   return a.sort((p,q)=>p.avgPlace-q.avgPlace||q.total-p.total);
@@ -3254,7 +3255,7 @@ function renderMonth(prefix){
     const totalAll=totalAbon+totalTovar;
     const totalNew=cur.reduce((s,a)=>s+a.newQty,0);
     const totalNewR=cur.reduce((s,a)=>s+a.newRub,0);
-    const leader=cur.filter(a=>a.shifts>0)[0];
+    const leader=cur.filter(a=>a.shifts>0).sort((p,q)=>q.perShift-p.perShift)[0];
     const pfx=prefix==='mar'?'ma':prefix==='may'?'mya':prefix==='jun'?'jua':prefix==='jul'?'jula':prefix==='aug'?'auga':prefix==='oct'?'octa':prefix==='sep'?'sepa':'aa';
     const safeSetA=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
     safeSetA(pfx+'-total',cur.length?fmtK(totalAll):'—');
@@ -3406,7 +3407,7 @@ function renderMonth(prefix){
     const tShifts=admins.reduce((s,a)=>s+(a.shifts||0),0);
     const tNewQty=admins.reduce((s,a)=>s+(a.newQty||0),0);
     const tNewRub=admins.reduce((s,a)=>s+(a.newRub||0),0);
-    const ldrCard=admins.filter(a=>a.shifts>0)[0];
+    const ldrCard=admins.filter(a=>a.shifts>0).sort((p,q)=>q.perShift-p.perShift)[0];
     safeA(pfxA+'-total', admins.length?fmtK(tTotal):'—');
     safeA(pfxA+'-abon',  admins.length?fmtK(tAbon):'—');
     safeA(pfxA+'-tovar', admins.length?fmtK(tTovar):'—');
@@ -3433,7 +3434,7 @@ function renderMonth(prefix){
         +_bdg(adm.tovarPS>0&&adm.pl_tovarPS===1,'Лидер по товарам в смену','🛍️')
         +_bdg(adm.newQty>0&&adm.pl_newQty===1,'Лидер по кол-ву новичков','👥');
       const _appCell=_showAppQty?`<td class="r">${adm.appQty!=null?adm.appQty:'—'}</td>`:'';
-      const _plTip=`Среднее место ${adm.avgPlace.toFixed(2)} — услуги/смену: ${adm.pl_abonPS}, товары/смену: ${adm.pl_tovarPS}, новичков шт.: ${adm.pl_newQty}, новичкам руб.: ${adm.pl_newRub}`;
+      const _plTip=`Среднее место ${adm.avgPlace.toFixed(2)} — услуги/смену: ${adm.pl_abonPS}, товары/смену: ${adm.pl_tovarPS}, новичков шт.: ${adm.pl_newQty}`;
       tr.innerHTML=`<td><span class="bx ${bc}" title="${_plTip}">${rank+1}</span></td><td style="font-weight:500">${adm.name}${badges}</td>
         <td class="r"><div class="mbar"><div class="mbar-bg"><div class="mbar-fill" style="width:${pb}%"></div></div><span class="mbar-val">${fmt(adm.abon)}</span></div></td>
         <td class="r"><div class="mbar"><div class="mbar-bg"><div class="mbar-fill o" style="width:${Math.round(adm.tovar/maxTovar*100)}%"></div></div><span class="mbar-val">${fmt(adm.tovar)}</span></div></td>
