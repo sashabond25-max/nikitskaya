@@ -19,7 +19,7 @@ h1 { font-size: 20px; font-weight: 500; margin-bottom: 6px; color: #3a3a3a; }
 .day-block:last-child { border-right: none; }
 .day-header { height: 54px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #5C6937; background: #f0f4e8; border-bottom: 1px solid #ddd; }
 .hall-strip { height: 20px; display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid #ddd; }
-.hs { font-size: 9px; text-align: center; display: flex; align-items: center; justify-content: center; font-weight: 500; }
+.hs { font-size: 10px; text-align: center; display: flex; align-items: center; justify-content: center; font-weight: 500; }
 .hs.h-zv { background: #EAF3DE; color: #3B6D11; }
 .hs.h-si { background: #E6F1FB; color: #185FA5; }
 .cols { display: grid; grid-template-columns: 1fr 1fr; height: 960px; position: relative; }
@@ -88,7 +88,7 @@ h1 { font-size: 20px; font-weight: 500; margin-bottom: 6px; color: #3a3a3a; }
 </head>
 <body>
 <h1>Расписание Никитская — регулярная сетка</h1>
-<p class="sub">З — зал Звезда, С — зал Сияние. Составлено по расписанию 1С на неделю 9.11–15.11.2026; индивидуальные занятия не показаны. Нажмите на занятие, чтобы увидеть подробности.</p>
+<p class="sub">Составлено по расписанию 1С на неделю 9.11–15.11.2026; индивидуальные занятия не показаны. Нажмите на занятие, чтобы увидеть подробности.</p>
 
 <div class="popup" id="popup">
   <button class="popup-close" id="popup-close">×</button>
@@ -249,7 +249,7 @@ const sched = {
 
 
 const days = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
-const HALLS = { zv: ['З', 'Зал Звезда', 'h-zv'], si: ['С', 'Зал Сияние', 'h-si'] };
+const HALLS = { zv: ['Звезда', 'Зал Звезда', 'h-zv'], si: ['Сияние', 'Зал Сияние', 'h-si'] };
 const wrap = document.getElementById('schedule');
 const esc = s => String(s).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
 
