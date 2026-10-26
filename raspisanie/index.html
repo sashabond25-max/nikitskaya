@@ -290,7 +290,7 @@ days.forEach(day => {
       div.className = 'cls ' + cls;
       div.style.top = (toY(item.t) + 1) + 'px';
       div.style.height = (toHpx(item.d) - 2) + 'px';
-      const title = item.reserve ? 'Резерв' : (item.c || 'НУЖЕН ПРЕПОДАВАТЕЛЬ');
+      const title = item.reserve ? 'Тичерз' : (item.c || 'НУЖЕН ПРЕПОДАВАТЕЛЬ');
       // В блоке — короткое название, полное — во всплывающей карточке
       const short = title.replace(/\.?\s*Все уровни\.?/i, '').replace(/^(Хатха|Аштанга) йога/i, '$1')
         .replace(/НАЧИНАЮЩИЙ/, 'Начинающий').replace(/^Хатха и /, 'Хатха + ').replace(/\.$/, '');
@@ -301,7 +301,7 @@ days.forEach(day => {
         e.stopPropagation();
         const popup = document.getElementById('popup');
         document.getElementById('popup-time').textContent = item.t + '–' + endStr + ' · ' + item.d + ' мин';
-        document.getElementById('popup-class').textContent = item.reserve ? 'Резерв (каждую субботу)' : title;
+        document.getElementById('popup-class').textContent = item.reserve ? 'Тичерз (каждую субботу)' : title;
         document.getElementById('popup-teacher').textContent = item.need && item.c ? 'Нужен преподаватель (сейчас: ' + item.n + ')' : (who || '');
         const hallEl = document.getElementById('popup-hall');
         hallEl.textContent = HALLS[key][1];
@@ -334,7 +334,7 @@ legend.innerHTML = TYPES.filter(([cls]) => used.has(cls)).map(([cls, label]) => 
   return dot('background:' + bg, label);
 }).join('') +
   dot('background:#E5383B;border:1px solid #A4161A', 'Нужен преподаватель') +
-  dot('background:#E2E2E2;border:1px dashed #aaa', 'Резерв') +
+  dot('background:#E2E2E2;border:1px dashed #aaa', 'Тичерз') +
   `<div class="leg-item"><span class="onl" style="font-size:10px;font-weight:600;color:#185FA5;background:#E6F1FB;padding:0 5px;border-radius:6px;">+онлайн</span>идёт и в Zoom</div>`;
 
 document.getElementById('popup-close').addEventListener('click', () => document.getElementById('popup').classList.remove('open'));
