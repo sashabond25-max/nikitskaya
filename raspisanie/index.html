@@ -273,11 +273,25 @@ const used = new Set();        // направления без цвета из 
 const usedCol = new Map();     // цвет из 1С → названия классов этого цвета
 const shortName = s => s.replace(/\.?\s*Все уровни\.?/i, '').replace(/^(Хатха|Аштанга) йога/i, '$1')
   .replace(/НАЧИНАЮЩИЙ/, 'Начинающий').replace(/^Хатха и /, 'Хатха + ').replace(/\.$/, '');
-// Тёмный текст на светлом фоне, белый — на тёмном
-const textOn = rgb => {
-  const [r, g, b] = (rgb.match(/\d+/g) || [255, 255, 255]).map(Number);
-  return (0.299 * r + 0.587 * g + 0.114 * b) < 150 ? '#fff' : '#1a1a1a';
+// Цвет текста в тон фону: на светлом — глубокий оттенок того же цвета, на тёмном — очень светлый
+const hueOf = rgb => {
+  let [r, g, b] = (rgb.match(/\d+/g) || [255, 255, 255]).map(n => n / 255);
+  const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2;
+  let h = 0, s = 0;
+  if (mx !== mn) {
+    const d = mx - mn;
+    s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+    h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    h *= 60;
+  }
+  return { h: Math.round(h), s: Math.round(s * 100), dark: (0.299 * r + 0.587 * g + 0.114 * b) * 255 < 150 };
 };
+const textOn = rgb => {
+  const { h, s, dark } = hueOf(rgb);
+  return dark ? `hsl(${h}, ${Math.min(100, s + 20)}%, 94%)` : `hsl(${h}, ${Math.max(45, Math.min(85, s))}%, 22%)`;
+};
+// «+онлайн» — плашка в тон занятию
+const badgeOn = rgb => { const { h, s } = hueOf(rgb); return `color:hsl(${h}, ${Math.max(45, Math.min(85, s))}%, 28%)`; };
 days.forEach(day => {
   const data = sched[day] || {};
   const block = document.createElement('div');
@@ -318,7 +332,7 @@ days.forEach(day => {
       div.style.top = (toY(item.t) + 1) + 'px';
       div.style.height = (toHpx(item.d) - 2) + 'px';
       const who = item.reserve || (item.need && !item.c) ? '' : (item.need ? 'НУЖЕН ПРЕПОДАВАТЕЛЬ' : item.n);
-      div.innerHTML = `<div class="ctime">${item.t}–${endStr}${item.online ? '<span class="onl">+онлайн</span>' : ''}</div>` +
+      div.innerHTML = `<div class="ctime">${item.t}–${endStr}${item.online ? `<span class="onl"${item.col && !item.need ? ` style="${badgeOn(item.col)}"` : ""}>+онлайн</span>` : ""}</div>` +
         `<div class="cname">${esc(short)}</div><div class="tname">${esc(who || '')}</div>`;
       div.addEventListener('click', e => {
         e.stopPropagation();
