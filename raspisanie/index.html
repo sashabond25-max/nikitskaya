@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Расписание Никитская</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a; padding: 24px; }
+h1 { font-size: 20px; font-weight: 500; margin-bottom: 6px; color: #3a3a3a; }
+.sub { font-size: 12px; color: #999; margin-bottom: 18px; }
+.scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.schedule { display: flex; min-width: 980px; border: 1px solid #ddd; border-radius: 12px; overflow: hidden; background: #fff; }
+.time-col { width: 52px; flex-shrink: 0; background: #fafafa; border-right: 1px solid #e8e8e8; }
+.time-header { height: 74px; border-bottom: 1px solid #ddd; }
+.time-axis { position: relative; height: 960px; }
+.tick { position: absolute; right: 4px; font-size: 10px; color: #999; transform: translateY(-50%); white-space: nowrap; }
+.day-block { flex: 1; min-width: 0; border-right: 1px solid #ddd; }
+.day-block:last-child { border-right: none; }
+.day-header { height: 54px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #5C6937; background: #f0f4e8; border-bottom: 1px solid #ddd; }
+.hall-strip { height: 20px; display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid #ddd; }
+.hs { font-size: 9px; text-align: center; display: flex; align-items: center; justify-content: center; font-weight: 500; }
+.hs.h-zv { background: #EAF3DE; color: #3B6D11; }
+.hs.h-si { background: #E6F1FB; color: #185FA5; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; height: 960px; position: relative; }
+.hall-col { position: relative; border-right: 1px solid #f0f0f0; }
+.hall-col:last-child { border-right: none; }
+.hline { position: absolute; left: 0; right: 0; border-top: 1px solid #f0f0f0; pointer-events: none; }
+.hline.bold { border-top-color: #e0e0e0; }
+.cls { position: absolute; left: 2px; right: 2px; border-radius: 4px; padding: 3px 4px; font-size: 11px; line-height: 1.3; overflow: hidden; cursor: pointer; }
+.cls:hover { filter: brightness(0.93); }
+.cls .ctime { font-size: 10px; opacity: 0.65; }
+.cls .cname { font-weight: 600; font-size: 11px; }
+.cls .tname { font-size: 11px; font-weight: 500; opacity: 0.9; }
+.cls .onl { display: inline-block; font-size: 9px; font-weight: 600; padding: 0 4px; border-radius: 6px; background: rgba(255,255,255,0.7); color: #185FA5; margin-left: 3px; vertical-align: 1px; }
+.cls-need { background: #E5383B !important; color: #fff !important; border: 2px solid #A4161A; font-weight: 700; }
+.cls-need .cname, .cls-need .tname, .cls-need .ctime { font-weight: 700; opacity: 1; }
+.cls-res { background: repeating-linear-gradient(45deg, #ECECEC, #ECECEC 6px, #E2E2E2 6px, #E2E2E2 12px); color: #666; border: 1px dashed #aaa; }
+/* Хатха — зелёные */
+.t-hbeg  { background: #DDF2C9; color: #2F5A0C; }
+.t-hall  { background: #A9DC8A; color: #1F4A06; }
+.t-hpow  { background: #6FB24A; color: #fff; }
+.t-haroma{ background: #CDE8B0; color: #3A5A10; border-left: 4px solid #9BC46A; }
+.t-hmed  { background: #E4EEC4; color: #4A5A10; border-left: 4px solid #B5C46A; }
+.t-hstr  { background: #C3E6A0; color: #2F5A0C; border-left: 4px solid #6FB24A; }
+.t-hmorn { background: #F1F3B4; color: #5A5A0C; }
+.t-kult  { background: #D2EAD9; color: #1E5A35; }
+/* Терапия — бирюзовые */
+.t-back  { background: #7FCFC4; color: #08403A; }
+.t-sound { background: #B9E6E0; color: #0E5047; }
+/* Аштанга — оранжевые */
+.t-mysore{ background: #F6A65A; color: #5A2A00; }
+.t-led   { background: #FBD1A2; color: #6B3A06; }
+.t-asht  { background: #F8BC7E; color: #5A2A00; }
+/* Остальные */
+.t-vin   { background: #B5D4F4; color: #0C447C; }
+.t-y23   { background: #D9C6F2; color: #4A2A7A; }
+.t-yin   { background: #C7CDF0; color: #2A3A7A; }
+.t-women { background: #F5C2DD; color: #7A1E50; }
+.t-other { background: #E8E8E8; color: #444; }
+
+.legend { display: flex; gap: 10px 20px; margin-top: 14px; flex-wrap: wrap; }
+.leg-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #666; }
+.leg-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
+.popup { display: none; position: absolute; z-index: 1000; background: #fff; border-radius: 14px; padding: 20px 22px; min-width: 220px; max-width: 300px; box-shadow: 0 8px 32px rgba(0,0,0,0.22); }
+.popup.open { display: block; }
+.popup-close { position: absolute; top: 10px; right: 14px; font-size: 20px; cursor: pointer; color: #bbb; line-height: 1; border: none; background: none; padding: 0; }
+.popup-close:hover { color: #333; }
+.popup-time { font-size: 12px; color: #999; margin-bottom: 5px; }
+.popup-class { font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 5px; line-height: 1.3; }
+.popup-teacher { font-size: 14px; color: #3a3a3a; margin-bottom: 8px; }
+.popup-hall { font-size: 11px; font-weight: 600; display: inline-block; padding: 2px 9px; border-radius: 20px; }
+.popup-hall.h-zv { background: #EAF3DE; color: #3B6D11; }
+.popup-hall.h-si { background: #E6F1FB; color: #185FA5; }
+.popup-day { font-size: 11px; color: #aaa; margin-left: 6px; }
+.popup-onl { font-size: 12px; color: #185FA5; margin-top: 8px; display: none; }
+
+@media (max-width: 600px) { body { padding: 12px; } }
+</style>
+</head>
+<body>
+<h1>Расписание Никитская — регулярная сетка</h1>
+<p class="sub">З — зал Звезда, С — зал Сияние. Составлено по расписанию 1С на неделю 9.11–15.11.2026; индивидуальные занятия не показаны. Нажмите на занятие, чтобы увидеть подробности.</p>
+
+<div class="popup" id="popup">
+  <button class="popup-close" id="popup-close">×</button>
+  <div class="popup-time" id="popup-time"></div>
+  <div class="popup-class" id="popup-class"></div>
+  <div class="popup-teacher" id="popup-teacher"></div>
+  <span class="popup-hall" id="popup-hall"></span>
+  <span class="popup-day" id="popup-day"></span>
+  <div class="popup-onl" id="popup-onl">+ онлайн-трансляция в Zoom</div>
+</div>
+
+<div class="scroll"><div class="schedule" id="schedule"></div></div>
+
+<div class="legend" id="legend"></div>
+
+<script>
+const START_H = 6, END_H = 22, TOTAL = (END_H - START_H) * 60, H = 960;
+const toMin = t => { const [h,m] = t.split(':').map(Number); return (h - START_H)*60+(m||0); };
+const toY = t => toMin(t) / TOTAL * H;
+const toHpx = d => d / TOTAL * H;
+
+// Порядок важен: сначала более узкие направления
+const TYPES = [
+  ['t-mysore', 'Аштанга. Майсор',            x => x.includes('майсор')],
+  ['t-led',    'Аштанга. Лэд класс',         x => x.includes('лэд')],
+  ['t-asht',   'Аштанга йога',               x => x.includes('аштанга')],
+  ['t-vin',    'Виньяса',                    x => x.includes('виньяса')],
+  ['t-y23',    'Йога 23',                    x => x.includes('йога 23')],
+  ['t-yin',    'Инь йога',                   x => x.includes('инь')],
+  ['t-sound',  'Звукотерапия',               x => x.includes('звук')],
+  ['t-women',  'Йога для женского здоровья', x => x.includes('женск')],
+  ['t-back',   'Здоровая спина',             x => x.includes('спина')],
+  ['t-haroma', 'Хатха + ароматерапия',       x => x.includes('арома')],
+  ['t-hmed',   'Хатха + медитация',          x => x.includes('медитац')],
+  ['t-hstr',   'Хатха + растяжка',           x => x.includes('растяжк')],
+  ['t-kult',   'Хатха. Культура движения',   x => x.includes('культура')],
+  ['t-hmorn',  'Хатха. Бодрое утро',         x => x.includes('бодрое')],
+  ['t-hpow',   'Хатха. Силовой класс',       x => x.includes('силов')],
+  ['t-hbeg',   'Хатха. Начинающий',          x => x.includes('начинающ')],
+  ['t-hall',   'Хатха. Все уровни',          x => x.includes('хатха')],
+];
+const typeOf = c => { const x = (c || '').toLowerCase(); const t = TYPES.find(([, , f]) => f(x)); return t ? t[0] : 't-other'; };
+
+const sched = {
+  'Пн': {
+    zv: [
+      {t:'7:00', d:75, n:'Тертычная А.', c:'Йога 23. Все уровни', online:true},
+      {t:'8:15', d:105, n:'Барабаш Т.', c:'Аштанга йога. НАЧИНАЮЩИЙ'},
+      {t:'10:00', d:90, n:'Иванова М.', c:'Хатха йога. Все уровни'},
+      {t:'12:00', d:90, n:'НУЖЕН ПРЕПОДАВАТЕЛЬ', c:'', need:true},
+      {t:'14:00', d:90, n:'Скачев П.', c:'Хатха йога. Здоровая спина. Все уровни', online:true},
+      {t:'17:30', d:75, n:'Зеленая М.', c:'Хатха йога. Начинающий', online:true},
+      {t:'19:00', d:75, n:'Иванова М.', c:'Виньяса Флоу. Все уровни'},
+      {t:'20:15', d:75, n:'Зареченская М.', c:'Хатха йога и растяжка. Все уровни', online:true},
+    ],
+    si: [
+      {t:'6:30', d:105, n:'Барабаш Т.', c:'Аштанга йога. Все уровни'},
+      {t:'18:45', d:75, n:'Петросян А.', c:'Хатха йога. Начинающий'},
+      {t:'20:00', d:75, n:'Лычак Ю.', c:'Инь йога. Все уровни'},
+    ],
+  },
+  'Вт': {
+    zv: [
+      {t:'6:30', d:210, n:'Барабаш Т.', c:'Аштанга. Майсор. Все уровни'},
+      {t:'10:00', d:90, n:'Нездольева М.', c:'Хатха йога. Культура движения. Все уровни', online:true},
+      {t:'12:15', d:90, n:'Кабаничий А.', c:'Хатха йога. Все уровни', online:true},
+      {t:'14:00', d:90, n:'Нездольева М.', c:'Хатха йога. Начинающий'},
+      {t:'17:30', d:75, n:'Колбина А.', c:'Хатха йога. Все уровни'},
+      {t:'19:00', d:75, n:'Агаркова Ю.', c:'Хатха йога. Начинающий', online:true},
+      {t:'20:15', d:90, n:'Скачев П.', c:'Виньяса Флоу. Все уровни', online:true},
+    ],
+    si: [
+      {t:'8:00', d:60, n:'Ахметова В.', c:'Виньяса. Утренний интенсив. Все уровни', online:true},
+      {t:'18:45', d:75, n:'Березкина О.', c:'Хатха йога и ароматерапия. Все уровни'},
+      {t:'20:00', d:90, n:'Пашкина А.', c:'Хатха йога и медитация. Начинающий'},
+    ],
+  },
+  'Ср': {
+    zv: [
+      {t:'7:00', d:75, n:'Тертычная А.', c:'Йога 23. Все уровни', online:true},
+      {t:'8:15', d:105, n:'Барабаш Т.', c:'Аштанга йога. НАЧИНАЮЩИЙ'},
+      {t:'10:00', d:75, n:'Гордиенко С.', c:'Хатха йога. Бодрое утро. Все уровни', online:true},
+      {t:'12:00', d:90, n:'Иванова М.', c:'Хатха йога. Все уровни'},
+      {t:'14:00', d:90, n:'Скачев П.', c:'Хатха йога. Здоровая спина. Все уровни', online:true},
+      {t:'17:30', d:75, n:'Зеленая М.', c:'Хатха йога. Начинающий', online:true},
+      {t:'19:00', d:75, n:'Иванова М.', c:'Виньяса Флоу. Все уровни'},
+      {t:'20:15', d:75, n:'Зареченская М.', c:'Хатха йога и растяжка. Все уровни', online:true},
+    ],
+    si: [
+      {t:'6:30', d:105, n:'Барабаш Т.', c:'Аштанга йога. Все уровни'},
+      {t:'12:00', d:90, n:'Иванова М.', c:'Виньяса Флоу. Все уровни'},
+      {t:'14:00', d:90, n:'НУЖЕН ПРЕПОДАВАТЕЛЬ', c:'', need:true},
+      {t:'18:45', d:75, n:'Ким К.', c:'Хатха йога и медитация. Все уровни'},
+    ],
+  },
+  'Чт': {
+    zv: [
+      {t:'6:30', d:210, n:'Барабаш Т.', c:'Аштанга. Майсор. Все уровни'},
+      {t:'10:00', d:90, n:'Нездольева М.', c:'Хатха йога. Культура движения. Все уровни', online:true},
+      {t:'12:15', d:90, n:'Кабаничий А.', c:'Хатха йога. Все уровни', online:true},
+      {t:'14:00', d:90, n:'Хейлик Ю.', c:'Хатха йога. Начинающий'},
+      {t:'17:30', d:75, n:'Колбина А.', c:'Хатха йога. Все уровни'},
+      {t:'19:00', d:75, n:'Агаркова Ю.', c:'Хатха йога. Начинающий', online:true},
+      {t:'20:15', d:90, n:'Скачев П.', c:'Виньяса Флоу. Все уровни', online:true},
+    ],
+    si: [
+      {t:'8:00', d:60, n:'Ахметова В.', c:'Виньяса. Утренний интенсив. Все уровни', online:true},
+      {t:'18:45', d:75, n:'Березкина О.', c:'Хатха йога и ароматерапия. Все уровни'},
+      {t:'20:00', d:90, n:'Пашкина А.', c:'Хатха йога и медитация. Начинающий'},
+    ],
+  },
+  'Пт': {
+    zv: [
+      {t:'6:30', d:210, n:'Барабаш Т.', c:'Аштанга. Майсор. Все уровни'},
+      {t:'10:00', d:75, n:'Гордиенко С.', c:'Хатха йога. Бодрое утро. Все уровни', online:true},
+      {t:'12:00', d:90, n:'Иванова М.', c:'Виньяса Флоу. Все уровни', online:true},
+      {t:'14:00', d:90, n:'Скачев П.', c:'Хатха йога. Здоровая спина. Все уровни', online:true},
+      {t:'17:30', d:90, n:'Иванова М.', c:'Хатха йога. Все уровни'},
+      {t:'19:00', d:80, n:'Нездольева М.', c:'Хатха йога. Культура движения. Все уровни'},
+      {t:'20:30', d:60, n:'Шаповалов А.', c:'Звукотерапия. Все уровни'},
+    ],
+    si: [
+      {t:'18:45', d:90, n:'Петросян А.', c:'Хатха йога. Начинающий'},
+    ],
+  },
+  'Сб': {
+    zv: [
+      {t:'8:30', d:90, n:'Пичугина М.', c:'Аштанга. Лэд класс. Все уровни', online:true},
+      {t:'10:00', d:90, n:'Тертычная А.', c:'Йога 23. Все уровни', online:true},
+      {t:'13:15', d:90, n:'Агаркова Ю.', c:'Хатха йога. Начинающий', online:true},
+      {t:'15:00', d:90, n:'Скачев П.', c:'Хатха йога. Силовой класс. Все уровни'},
+      {t:'17:00', d:240, reserve:true},
+    ],
+    si: [
+      {t:'11:30', d:90, n:'Лычак Ю.', c:'Хатха йога и медитация. Все уровни'},
+      {t:'13:00', d:90, n:'Редькина Л.', c:'Йога для женского здоровья. Все уровни'},
+      {t:'14:30', d:90, n:'Березкина О.', c:'Хатха йога и ароматерапия. Все уровни'},
+      {t:'17:00', d:240, reserve:true},
+    ],
+  },
+  'Вс': {
+    zv: [
+      {t:'10:00', d:80, n:'Зареченская М.', c:'Хатха йога и растяжка. Все уровни', online:true},
+      {t:'11:30', d:90, n:'Старостина А.', c:'Хатха йога. Все уровни'},
+      {t:'13:10', d:90, n:'Пичугина М.', c:'Хатха йога и ароматерапия. Все уровни'},
+      {t:'14:50', d:90, n:'Подгорнова Ю.', c:'Хатха йога. Начинающий'},
+      {t:'16:30', d:80, n:'Комиссарова К.', c:'Инь йога и Звукотерапия. Все уровни'},
+      {t:'18:00', d:90, n:'Слуцкая А.', c:'Хатха йога и медитация. Все уровни'},
+    ],
+    si: [
+    ],
+  },
+};
+
+
+const days = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+const HALLS = { zv: ['З', 'Зал Звезда', 'h-zv'], si: ['С', 'Зал Сияние', 'h-si'] };
+const wrap = document.getElementById('schedule');
+const esc = s => String(s).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+
+// Колонка времени
+const timeColEl = document.createElement('div');
+timeColEl.className = 'time-col';
+timeColEl.innerHTML = '<div class="time-header"></div>';
+const axEl = document.createElement('div');
+axEl.className = 'time-axis';
+for (let h = START_H; h <= END_H; h++) {
+  const t = document.createElement('div');
+  t.className = 'tick';
+  t.style.top = ((h - START_H) / (END_H - START_H) * H) + 'px';
+  t.textContent = h + ':00';
+  axEl.appendChild(t);
+}
+timeColEl.appendChild(axEl);
+wrap.appendChild(timeColEl);
+
+const used = new Set();
+days.forEach(day => {
+  const data = sched[day] || {};
+  const block = document.createElement('div');
+  block.className = 'day-block';
+  block.innerHTML = `<div class="day-header">${day}</div><div class="hall-strip">` +
+    Object.values(HALLS).map(([l, , cls]) => `<div class="hs ${cls}">${l}</div>`).join('') + '</div>';
+
+  const cols = document.createElement('div');
+  cols.className = 'cols';
+  Object.keys(HALLS).forEach(key => {
+    const col = document.createElement('div');
+    col.className = 'hall-col';
+    for (let h = START_H; h <= END_H; h++) {
+      const l = document.createElement('div');
+      l.className = 'hline' + (h % 2 === 0 ? ' bold' : '');
+      l.style.top = ((h - START_H) / (END_H - START_H) * H) + 'px';
+      col.appendChild(l);
+    }
+    (data[key] || []).forEach(item => {
+      const endMin = toMin(item.t) + item.d;
+      const endStr = (Math.floor(endMin / 60) + START_H) + ':' + String(endMin % 60).padStart(2, '0');
+      const div = document.createElement('div');
+      let cls;
+      if (item.reserve) cls = 'cls-res';
+      else if (item.need && !item.c) cls = 'cls-need';
+      else { cls = typeOf(item.c) + (item.need ? ' cls-need' : ''); used.add(typeOf(item.c)); }
+      div.className = 'cls ' + cls;
+      div.style.top = (toY(item.t) + 1) + 'px';
+      div.style.height = (toHpx(item.d) - 2) + 'px';
+      const title = item.reserve ? 'Резерв' : (item.c || 'НУЖЕН ПРЕПОДАВАТЕЛЬ');
+      // В блоке — короткое название, полное — во всплывающей карточке
+      const short = title.replace(/\.?\s*Все уровни\.?/i, '').replace(/^(Хатха|Аштанга) йога/i, '$1')
+        .replace(/НАЧИНАЮЩИЙ/, 'Начинающий').replace(/^Хатха и /, 'Хатха + ').replace(/\.$/, '');
+      const who = item.reserve ? '' : (item.need && item.c ? 'НУЖЕН ПРЕПОДАВАТЕЛЬ' : item.n);
+      div.innerHTML = `<div class="ctime">${item.t}–${endStr}${item.online ? '<span class="onl">+онлайн</span>' : ''}</div>` +
+        `<div class="cname">${esc(short)}</div><div class="tname">${esc(who || '')}</div>`;
+      div.addEventListener('click', e => {
+        e.stopPropagation();
+        const popup = document.getElementById('popup');
+        document.getElementById('popup-time').textContent = item.t + '–' + endStr + ' · ' + item.d + ' мин';
+        document.getElementById('popup-class').textContent = item.reserve ? 'Резерв (каждую субботу)' : title;
+        document.getElementById('popup-teacher').textContent = item.need && item.c ? 'Нужен преподаватель (сейчас: ' + item.n + ')' : (who || '');
+        const hallEl = document.getElementById('popup-hall');
+        hallEl.textContent = HALLS[key][1];
+        hallEl.className = 'popup-hall ' + HALLS[key][2];
+        document.getElementById('popup-day').textContent = day;
+        document.getElementById('popup-onl').style.display = item.online ? 'block' : 'none';
+        const rect = div.getBoundingClientRect();
+        const scrollY = window.scrollY || document.documentElement.scrollTop;
+        const scrollX = window.scrollX || document.documentElement.scrollLeft;
+        popup.style.top = (rect.bottom + scrollY + 6) + 'px';
+        let left = rect.left + scrollX;
+        if (left + 310 > document.documentElement.clientWidth) left = Math.max(4, rect.right + scrollX - 310);
+        popup.style.left = left + 'px';
+        popup.classList.add('open');
+      });
+      col.appendChild(div);
+    });
+    cols.appendChild(col);
+  });
+  block.appendChild(cols);
+  wrap.appendChild(block);
+});
+
+// Легенда — только направления, которые есть в сетке
+const legend = document.getElementById('legend');
+const dot = (style, label) => `<div class="leg-item"><div class="leg-dot" style="${style}"></div>${label}</div>`;
+legend.innerHTML = TYPES.filter(([cls]) => used.has(cls)).map(([cls, label]) => {
+  const probe = document.createElement('div'); probe.className = cls; document.body.appendChild(probe);
+  const bg = getComputedStyle(probe).backgroundColor; probe.remove();
+  return dot('background:' + bg, label);
+}).join('') +
+  dot('background:#E5383B;border:1px solid #A4161A', 'Нужен преподаватель') +
+  dot('background:#E2E2E2;border:1px dashed #aaa', 'Резерв') +
+  `<div class="leg-item"><span class="onl" style="font-size:10px;font-weight:600;color:#185FA5;background:#E6F1FB;padding:0 5px;border-radius:6px;">+онлайн</span>идёт и в Zoom</div>`;
+
+document.getElementById('popup-close').addEventListener('click', () => document.getElementById('popup').classList.remove('open'));
+document.addEventListener('click', e => { const p = document.getElementById('popup'); if (!p.contains(e.target)) p.classList.remove('open'); });
+</script>
+</body>
+</html>
