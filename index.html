@@ -3718,7 +3718,7 @@ function renderMonth(prefix){
     // График услуги/товары
     if(_admChart){_admChart.destroy();_admChart=null;}
     const active=admins.filter(a=>a.total>0);
-    const _admCanvas=document.getElementById(prefix==='may'?'chartMayAdmins':prefix==='jun'?'chartJunAdmins':prefix==='jul'?'chartJulAdmins':prefix==='aug'?'chartAugAdmins':prefix==='oct'?'chartOctAdmins':prefix==='sep'?'chartSepAdmins':'chartAprAdmins');
+    const _admCanvas=document.getElementById(prefix==='may'?'chartMayAdmins':prefix==='jun'?'chartJunAdmins':prefix==='jul'?'chartJulAdmins':prefix==='aug'?'chartAugAdmins':prefix==='nov'?'chartNovAdmins':prefix==='oct'?'chartOctAdmins':prefix==='sep'?'chartSepAdmins':'chartAprAdmins');
     if(_admCanvas){_admChart=new Chart(_admCanvas,{type:'bar',
       data:{labels:active.map(a=>a.name),datasets:[
         {label:'Услуги',data:active.map(a=>a.abon),backgroundColor:G,borderRadius:4},
@@ -3731,7 +3731,7 @@ function renderMonth(prefix){
 
     // График NEWBIES
     if(_newbiesChart){_newbiesChart.destroy();_newbiesChart=null;}
-    const _newbiesCanvas=document.getElementById(prefix==='may'?'chartMayNewbies':prefix==='jun'?'chartJunNewbies':prefix==='jul'?'chartJulNewbies':prefix==='aug'?'chartAugNewbies':prefix==='oct'?'chartOctNewbies':prefix==='sep'?'chartSepNewbies':'chartAprNewbies');
+    const _newbiesCanvas=document.getElementById(prefix==='may'?'chartMayNewbies':prefix==='jun'?'chartJunNewbies':prefix==='jul'?'chartJulNewbies':prefix==='aug'?'chartAugNewbies':prefix==='nov'?'chartNovNewbies':prefix==='oct'?'chartOctNewbies':prefix==='sep'?'chartSepNewbies':'chartAprNewbies');
     if(newbies.labels.length&&_newbiesCanvas){
       _newbiesChart=new Chart(_newbiesCanvas,{type:'bar',
         data:{labels:newbies.labels,datasets:[{label:'Продажи новичкам',data:newbies.revenue,backgroundColor:newbies.colors,borderRadius:6,
