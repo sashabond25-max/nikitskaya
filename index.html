@@ -122,7 +122,7 @@ td.r{text-align:right;font-variant-numeric:tabular-nums}
 <header class="hd">
   <div class="hd-logo">
     <svg viewBox="0 0 30 30" fill="none"><ellipse cx="15" cy="15" rx="9.5" ry="9.5" stroke="#fdf6f0" stroke-width="1.1"/><ellipse cx="15" cy="15" rx="13.5" ry="5.5" stroke="#fdf6f0" stroke-width="1.1" transform="rotate(-24 15 15)"/></svg>
-    <div><div class="hd-name">Yoga Space · Никитская</div><div class="hd-sub">обновлено 2 ноя 2026</div></div>
+    <div><div class="hd-name">Yoga Space · Никитская</div><div class="hd-sub">обновлено 9 ноя 2026</div></div>
   </div>
   <div class="hd-badge" id="hd-badge">2026</div>
 </header>
@@ -137,6 +137,7 @@ td.r{text-align:right;font-variant-numeric:tabular-nums}
   <button class="mbtn" onclick="showMonth('aug',this)">Август</button>
   <button class="mbtn" onclick="showMonth('sep',this)">Сентябрь</button>
   <button class="mbtn" onclick="showMonth('oct',this)">Октябрь</button>
+  <button class="mbtn" onclick="showMonth('nov',this)">Ноябрь</button>
 </nav>
 
 <!-- [FIX 9] Объединили "Продажи" и "По категориям" → "Продажи" -->
@@ -1361,15 +1362,15 @@ td.r{text-align:right;font-variant-numeric:tabular-nums}
     <div class="card purple"><div class="card-lbl">Продано First</div><div class="card-val purple" id="octv-first-sold">—</div><div class="card-sub">всего за октябрь</div></div>
     <div class="card"><div class="card-lbl">Конверсия First</div><div class="card-val" id="octv-conv">—</div><div class="card-sub">от первых посещений</div></div>
   </div>
-  <div class="panel" id="visitsPanelSep">
+  <div class="panel" id="visitsPanelOct">
     <h3>Посещения — детализация</h3>
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;padding-left:13px">
       <button class="vbtn active" onclick="switchVisitView('oct','weeks',this)">По неделям</button>
       <button class="vbtn" onclick="switchVisitView('oct','days',this)">По дням недели</button>
       <button class="vbtn" onclick="switchVisitView('oct','hours',this)">По часам</button>
     </div>
-    <div class="chart-h" id="visitChartWrapSep"><canvas id="chartOctVisits"></canvas></div>
-    <div class="legend" id="visitLegendSep">
+    <div class="chart-h" id="visitChartWrapOct"><canvas id="chartOctVisits"></canvas></div>
+    <div class="legend" id="visitLegendOct">
       <div class="leg"><div class="leg-dot" style="background:var(--b)"></div>Утро до 15:30</div>
       <div class="leg"><div class="leg-dot" style="background:#aeb49c"></div>Выходные</div>
       <div class="leg"><div class="leg-dot" style="background:var(--o)"></div>Вечер 15:30+</div>
@@ -1456,6 +1457,161 @@ td.r{text-align:right;font-variant-numeric:tabular-nums}
 </div>
 
 </div><!-- /month-oct -->
+<div class="mpane" id="month-nov">
+
+<!-- СЕН · Продажи -->
+<div class="sec active" id="nov-sec-sales">
+  <p class="eyebrow">Продажи · ноябрь 2026</p>
+  <div class="cards">
+    <div class="card"><div class="card-lbl">Итого за период</div><div class="card-val" id="novs-total">—</div><div class="card-sub">абонементы + товары</div></div>
+    <div class="card"><div class="card-lbl">Абонементы</div><div class="card-val" id="novs-abon">—</div><div class="card-sub">услуги студии</div></div>
+    <div class="card orange"><div class="card-lbl">Товары</div><div class="card-val orange" id="novs-tovar">—</div><div class="card-sub">розничные продажи</div></div>
+    <div class="card purple"><div class="card-lbl">План / нед.</div><div class="card-val purple" id="novs-plan">—</div><div class="card-sub">нет данных</div></div>
+  </div>
+  <div class="panel">
+    <h3>Продажи по неделям</h3><div class="panel-sub">абонементы и товары · ноябрь 2026</div>
+    <div class="chart-h"><canvas id="chartNovWeekly"></canvas></div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:var(--g)"></div>Абонементы</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--o)"></div>Товары</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--pu);height:3px;border-radius:0;border-top:2px dashed var(--pu)"></div>План</div>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>Детализация по неделям</h3><div class="panel-sub"></div>
+    <div class="twrap"><table>
+      <thead><tr><th>Неделя</th><th class="r">Абонементы</th><th class="r">Товары</th><th class="r">Итого</th><th class="r">% плана нед.</th><th class="r">Накоплено</th><th class="r">Посещения</th></tr></thead>
+      <tbody id="novWeekTable"></tbody>
+    </table></div>
+  </div>
+  <div class="chart-row">
+    <div class="panel" style="margin-bottom:0">
+      <h3>Услуги по времени</h3><div class="panel-sub">утро · вечер · выходные</div>
+      <div class="chart-h sm"><canvas id="chartNovAbonCats"></canvas></div>
+      <div class="legend" style="margin-top:8px">
+        <div class="leg"><div class="leg-dot" style="background:var(--g)"></div>Выходные</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--o)"></div>Вечер</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--b)"></div>Утро</div>
+      </div>
+    </div>
+    <div class="panel" style="margin-bottom:0">
+      <h3>Товары по времени</h3><div class="panel-sub">утро · вечер · выходные</div>
+      <div class="chart-h sm"><canvas id="chartNovTovarCats"></canvas></div>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>Детализация по категориям</h3><div class="panel-sub">строки — категории · столбцы — недели · итог — сумма недель; первая неделя переходная, захватывает 26–31 октября</div>
+    <div class="twrap"><table id="novCatsTable">
+      <thead><tr><th>Категория</th><th class="r">26 окт–1 ноя</th><th class="r">2–8 ноя</th><th class="r" style="background:#4a5429">Итого ноябрь</th></tr></thead>
+      <tbody id="novCatsTableBody"></tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- СЕН · Посещения и конверсия -->
+<div class="sec" id="nov-sec-visits">
+  <p class="eyebrow">Посещения и конверсия · ноябрь 2026</p>
+  <div class="cards">
+    <div class="card blue"><div class="card-lbl">Всего посещений</div><div class="card-val blue" id="novv-total">—</div><div class="card-sub">итого за ноябрь</div></div>
+    <div class="card blue"><div class="card-lbl">Первых за ноябрь</div><div class="card-val blue" id="novv-first-month">—</div><div class="card-sub">пробные + приведи друга</div></div>
+    <div class="card purple"><div class="card-lbl">Продано First</div><div class="card-val purple" id="novv-first-sold">—</div><div class="card-sub">всего за ноябрь</div></div>
+    <div class="card"><div class="card-lbl">Конверсия First</div><div class="card-val" id="novv-conv">—</div><div class="card-sub">от первых посещений</div></div>
+  </div>
+  <div class="panel" id="visitsPanelNov">
+    <h3>Посещения — детализация</h3>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;padding-left:13px">
+      <button class="vbtn active" onclick="switchVisitView('nov','weeks',this)">По неделям</button>
+      <button class="vbtn" onclick="switchVisitView('nov','days',this)">По дням недели</button>
+      <button class="vbtn" onclick="switchVisitView('nov','hours',this)">По часам</button>
+    </div>
+    <div class="chart-h" id="visitChartWrapNov"><canvas id="chartNovVisits"></canvas></div>
+    <div class="legend" id="visitLegendNov">
+      <div class="leg"><div class="leg-dot" style="background:var(--b)"></div>Утро до 15:30</div>
+      <div class="leg"><div class="leg-dot" style="background:#aeb49c"></div>Выходные</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--o)"></div>Вечер 15:30+</div>
+      <div class="leg"><div class="leg-dot" style="background:rgba(202,231,251,.7)"></div>Данных нет</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--g);border-radius:50%"></div>Первые посещения (линия)</div>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>Детализация по неделям</h3><div class="panel-sub"></div>
+    <div class="twrap"><table>
+      <thead><tr><th>Неделя</th><th class="r">Всего</th><th class="r">Динамика</th><th class="r">Первые посещения</th><th class="r">%</th></tr></thead>
+      <tbody id="novVisitTable"></tbody>
+    </table></div>
+  </div>
+  <div class="panel">
+    <h3>Первые посещения и покупки First</h3><div class="panel-sub">по неделям</div>
+    <div class="chart-h"><canvas id="chartNovTrialWeeks"></canvas></div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:var(--pu)"></div>Первые посещения</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--o);height:3px;border-radius:0;width:16px"></div>% конверсии</div>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>First — разрез по абонементам</h3><div class="panel-sub">ноябрь 2026</div>
+    <div style="position:relative;height:360px;width:100%"><canvas id="chartNovTrialPie2"></canvas></div>
+    <div id="novTrialPieLegend2"></div>
+  </div>
+  <canvas id="chartNovTrialPie" style="display:none"></canvas>
+  <div id="novTrialPieLegend" style="display:none"></div>
+  <div id="novtr-trial" style="display:none"></div>
+  <div id="novtr-conv" style="display:none"></div>
+  <div id="novtr-avg" style="display:none"></div>
+</div>
+
+<!-- СЕН · Администраторы -->
+<div class="sec" id="nov-sec-admins">
+  <p class="eyebrow">Администраторы · ноябрь 2026</p>
+  <div class="cards">
+    <div class="card"><div class="card-lbl">Всего продаж</div><div class="card-val" id="nova-total">—</div><div class="card-sub" id="nova-week-label">текущая неделя</div></div>
+    <div class="card"><div class="card-lbl">Услуги</div><div class="card-val" id="nova-abon">—</div><div class="card-sub">абонементы</div></div>
+    <div class="card orange"><div class="card-lbl">Товары</div><div class="card-val orange" id="nova-tovar">—</div><div class="card-sub">розничные</div></div>
+    <div class="card blue"><div class="card-lbl">Среднее в смену</div><div class="card-val blue" id="nova-avg">—</div><div class="card-sub">все смены</div></div>
+    <div class="card"><div class="card-lbl">Лидер</div><div class="card-val sm" id="nova-leader">—</div><div class="card-sub" id="nova-leader-val">—</div></div>
+    <div class="card purple"><div class="card-lbl">Продажи First</div><div class="card-val purple" id="nova-new">—</div><div class="card-sub" id="nova-new-rub">—</div></div>
+    <div class="card orange"><div class="card-lbl">Ср. чек новичка</div><div class="card-val orange" id="nova-new-avg">—</div><div class="card-sub">First 20%</div></div>
+  </div>
+  <div class="week-tabs" id="novAdminWeekTabs"></div>
+  <div class="panel">
+    <h3>Детализация</h3><div class="panel-sub" id="novAdminWeekLabel">—</div>
+    <div class="twrap"><table>
+      <thead><tr><th style="width:32px">#</th><th>Администратор</th><th class="r">Услуги</th><th class="r">Товары</th><th class="r">Итого</th><th class="r">Смены</th><th class="r">В смену</th><th class="r">First, шт.</th><th class="r">Новым, руб.</th></tr></thead>
+      <tbody id="novAdminTable"></tbody>
+    </table></div>
+  </div>
+  <div class="panel">
+    <h3>Услуги и товары по администраторам</h3><div class="panel-sub" id="novAdminChartLabel">—</div>
+    <div class="chart-h"><canvas id="chartNovAdmins"></canvas></div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:var(--g)"></div>Услуги</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--o)"></div>Товары</div>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>Продажи новичкам — First 20%</h3><div class="panel-sub"></div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+      <div style="flex:1;min-width:260px;position:relative;height:200px"><canvas id="chartNovNewbies"></canvas></div>
+      <div id="novNewbiesLegend" style="flex:1;min-width:200px;font-size:12px;line-height:2.1;align-self:center"></div>
+    </div>
+    <div id="novNewbiesTypes" style="margin-top:12px;padding-top:10px;border-top:1px solid var(--light);display:none"></div>
+  </div>
+  <div class="panel" id="novTovarCatsPanel">
+    <h3>Товары · категории</h3>
+    <div class="panel-sub" id="novTovarCatsLabel">—</div>
+    <div id="novTovarCatsBody"></div>
+  </div>
+  <div class="panel">
+    <h3>Продажа первого абонемента новичкам</h3><div class="panel-sub" id="novFirstDayLabel">—</div>
+    <div class="twrap"><table>
+      <thead><tr><th>Администратор</th><th class="r">Пробных гостей</th><th class="r">Продажи, шт.</th><th class="r">Продажи, руб.</th><th class="r">Конверсия</th><th>Тип абонементов</th></tr></thead>
+      <tbody id="novFirstDayTable"></tbody>
+    </table></div>
+  </div>
+  <div id="novShiftsBreakdown" class="panel"></div>
+</div>
+
+</div><!-- /month-nov -->
 
 </div><!-- /main -->
 
@@ -1464,20 +1620,21 @@ Chart.register(ChartDataLabels);
 
 // ── ДАННЫЕ ────────────────────────────────────
 const WEEKS={
-  labels:['9–15 мар','16–22 мар','23–29 мар','30 мар–5 апр','6–12 апр','13–19 апр','20–26 апр','27 апр–3 мая','4–10 мая','11–17 мая','18–24 мая','25–31 мая','1–7 июн','8–14 июн','15–21 июн','22–28 июн','29 июн–5 июл','6–12 июл','13–19 июл','20–26 июл','27 июл–2 авг','3–9 авг','10–16 авг','17–23 авг','24–30 авг','31 авг–6 сен','7–13 сен','14–20 сен','21–27 сен','28 сен–4 окт','5–11 окт','12–18 окт','19–25 окт','26 окт–1 ноя'],
-  abon:  [479000,505000,578000,616000,456000,664590,476300,565860,409460,559665,773110,704310,421810,489840,475821,536528,453430,448457,412380,480211,707672,549810,662730,421694,632101,400950,629640,562601,359545,507226,609887,489420,573269,536750],
-  tovar: [64000, 39000, 62000, 50000, 50000, 53986, 33668,53969, 47197, 48198, 77801,40186, 52726, 22300, 54179, 77750,37960, 59435, 55118, 66528, 59055, 46320, 57573, 39919, 55640, 49800, 47391, 45825,57954,37708,39826,67005,33283,91279],
-  visits:[331,310,339,338,350,359,352,297,276,311,318,320,289,286,324,322,321,294,317,317,321,313,327,313,383,293,360,306,314,310,309,282,329,330],
-  first: [32, 40, 37, 28, 39, 37, 34, 21, 27, 25, 34,12, 25,27, 22, 20,34, 36, 30, 30, 41, 27, 29, 36, 47, 43, 57, 50,39,55,40,50,29,39],
-  plan:  [587000,587000,587000,607000,607000,607000,607000,607000,607000,607000,607000,607000,607000,607000,607000,607000,587000,587000,587000,587000,587000,587000,587000,587000,587000,606000,606000,606000,606000,606000,587000,587000,587000,587000],
-  sepPart:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,418999,0,0,0,0,0,0,0,0],
-  isMarch:    [true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
-  isMay:      [false,false,false,false,false,false,false,false,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
-  isJune:     [false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
-  isJuly:     [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false],
-  isAugust:   [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,false,false,false,false,false,false,false,false],
-  isSeptember:[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,false,false,false,false],
-  isOctober:  [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true],
+  labels:['9–15 мар','16–22 мар','23–29 мар','30 мар–5 апр','6–12 апр','13–19 апр','20–26 апр','27 апр–3 мая','4–10 мая','11–17 мая','18–24 мая','25–31 мая','1–7 июн','8–14 июн','15–21 июн','22–28 июн','29 июн–5 июл','6–12 июл','13–19 июл','20–26 июл','27 июл–2 авг','3–9 авг','10–16 авг','17–23 авг','24–30 авг','31 авг–6 сен','7–13 сен','14–20 сен','21–27 сен','28 сен–4 окт','5–11 окт','12–18 окт','19–25 окт','26 окт–1 ноя','2–8 ноя'],
+  abon:  [479000,505000,578000,616000,456000,664590,476300,565860,409460,559665,773110,704310,421810,489840,475821,536528,453430,448457,412380,480211,707672,549810,662730,421694,632101,400950,629640,562601,359545,507226,609887,489420,573269,536750,577730],
+  tovar: [64000, 39000, 62000, 50000, 50000, 53986, 33668,53969, 47197, 48198, 77801,40186, 52726, 22300, 54179, 77750,37960, 59435, 55118, 66528, 59055, 46320, 57573, 39919, 55640, 49800, 47391, 45825,57954,37708,39826,67005,33283,91279,116220],
+  visits:[331,310,339,338,350,359,352,297,276,311,318,320,289,286,324,322,321,294,317,317,321,313,327,313,383,293,360,306,314,310,309,282,329,330,312],
+  first: [32, 40, 37, 28, 39, 37, 34, 21, 27, 25, 34,12, 25,27, 22, 20,34, 36, 30, 30, 41, 27, 29, 36, 47, 43, 57, 50,39,55,40,50,29,39,34],
+  plan:  [587000,587000,587000,607000,607000,607000,607000,607000,607000,607000,607000,607000,607000,607000,607000,607000,587000,587000,587000,587000,587000,587000,587000,587000,587000,606000,606000,606000,606000,606000,587000,587000,587000,587000,587000],
+  sepPart:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,418999,0,0,0,0,0,0,0,0,0],
+  isMarch:    [true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
+  isMay:      [false,false,false,false,false,false,false,false,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
+  isJune:     [false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
+  isJuly:     [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
+  isAugust:   [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false],
+  isSeptember:[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,false,false,false,false,false],
+  isOctober:  [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,false],
+  isNovember: [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true],
 };
 WEEKS.total=WEEKS.abon.map((a,i)=>a+WEEKS.tovar[i]);
 
@@ -1521,16 +1678,16 @@ const CATS_SEP_TIME={
 };
 
 const VISITS_TIME={
-  morn: [null,null,null,null,null,114,96,135,85, 103,137,100,70,65, 115,130,116,110,67, 95, 108,101,117,111,108,66, 94, 72,75,84,90,77,96,85],
-  eve:  [null,null,null,null,null,122,148,77, 104,108,85, 121,121,106,94, 107,120,101,148,103, 129,137,118,114,161,129,154,129,121,132,118,112,140,126],
-  wknd: [null,null,null,null,null,123,108,85, 87, 100,96, 99, 72,88, 115,85, 85, 83, 102,119, 84, 75, 92, 88, 114,98, 112,105,118,94,101,93,93,119],
+  morn: [null,null,null,null,null,114,96,135,85, 103,137,100,70,65, 115,130,116,110,67, 95, 108,101,117,111,108,66, 94, 72,75,84,90,77,96,85,97],
+  eve:  [null,null,null,null,null,122,148,77, 104,108,85, 121,121,106,94, 107,120,101,148,103, 129,137,118,114,161,129,154,129,121,132,118,112,140,126,117],
+  wknd: [null,null,null,null,null,123,108,85, 87, 100,96, 99, 72,88, 115,85, 85, 83, 102,119, 84, 75, 92, 88, 114,98, 112,105,118,94,101,93,93,119,98],
 };
 
 const TRIAL={
   labels:WEEKS.labels,isMarch:WEEKS.isMarch,
-  visits:[331,310,339,338,350,359,352,297,276,311,318,320,289,286,324,322,321,294,317,317,321,313,327,313,383,293,360,306,314,310,309,282,329,330],
-  trial: [32, 40, 37, 28, 39, 32, 34, 21, 27, 25, 34,29, 25,27, 22, 20,34, 36, 30, 30, 41, 27, 29, 36, 47, 43, 57, 50,39,55,40,50,29,39],
-  conversion:[3,4,4,5,5,8,9,8,8,7,9,12,5,5,13,5,10,14,8,11,10,9,7,7,14,10,9,12,8,5,12,9,4,12],
+  visits:[331,310,339,338,350,359,352,297,276,311,318,320,289,286,324,322,321,294,317,317,321,313,327,313,383,293,360,306,314,310,309,282,329,330,312],
+  trial: [32, 40, 37, 28, 39, 32, 34, 21, 27, 25, 34,29, 25,27, 22, 20,34, 36, 30, 30, 41, 27, 29, 36, 47, 43, 57, 50,39,55,40,50,29,39,34],
+  conversion:[3,4,4,5,5,8,9,8,8,7,9,12,5,5,13,5,10,14,8,11,10,9,7,7,14,10,9,12,8,5,12,9,4,12,5],
 };
 
 
@@ -1793,6 +1950,15 @@ const ADMINS_WEEKLY={
     {name:'Маша',   abon:25920,  tovar:837,   shifts:1, shifts_morn:0, shifts_eve:1, shifts_p:1, newQty:1, newRub:7600},
     {name:'Вика',   abon:14280,  tovar:0,     shifts:0, shifts_morn:0, shifts_eve:0, shifts_p:2, newQty:1, newRub:7600},
   ],
+  '2–8 ноя':[
+    {name:'Марина', abon:40580,  tovar:7264,  shifts:3, shifts_morn:1, shifts_eve:2, shifts_p:1, newQty:1, newRub:7600},
+    {name:'Аня К',  abon:145420, tovar:1257,  shifts:2, shifts_morn:2, shifts_eve:0, shifts_p:1, newQty:1, newRub:13600},
+    {name:'Настя',  abon:108950, tovar:24291, shifts:2, shifts_morn:1, shifts_eve:1, shifts_p:1, newQty:1, newRub:13600},
+    {name:'Лера',   abon:46820,  tovar:45987, shifts:2, shifts_morn:0, shifts_eve:2, shifts_p:2, newQty:1, newRub:13600},
+    {name:'Лера З', abon:40600,  tovar:16744, shifts:3, shifts_morn:2, shifts_eve:1, shifts_p:0, newQty:0, newRub:0},
+    {name:'Маша',   abon:32760,  tovar:20677, shifts:2, shifts_morn:1, shifts_eve:1, shifts_p:2, newQty:1, newRub:7600},
+    {name:'Вика',   abon:0,      tovar:0,     shifts:0, shifts_morn:0, shifts_eve:0, shifts_p:0, newQty:0, newRub:0},
+  ],
   // Итог июня: услуги и товары из xlsx (оплата с учётом возврата), First из Ферст.xlsx; смены — агрегат из недель
   'Итог июня':[
     {name:'Марина', abon:482890,tovar:69036,shifts:16,shifts_morn:9,shifts_eve:7,shifts_p:2, newQty:6,newRub:71200},
@@ -1838,10 +2004,17 @@ const SEP_ADMIN_WEEKS=['31 авг–6 сен','7–13 сен','14–20 сен','
 const SEP_WEEKS_ACTUAL=['7–13 сен','14–20 сен','21–27 сен','28 сен–4 окт'];
 const OCT_ADMIN_WEEKS=['28 сен–4 окт','5–11 окт','12–18 окт','19–25 окт','26 окт–1 ноя'];
 const OCT_WEEKS_ACTUAL=['5–11 окт','12–18 окт','19–25 окт','26 окт–1 ноя'];
+const NOV_ADMIN_WEEKS=['26 окт–1 ноя','2–8 ноя'];
+const NOV_WEEKS_ACTUAL=['2–8 ноя'];
 const CATS_OCT_TIME={
   labels:['28 сен–4 окт','5–11 окт','12–18 окт','19–25 окт','26 окт–1 ноя'],
   abon:{morn:[119910,263470,123680,138480,229020],eve:[220180,169370,155830,151940,117050],wknd:[148692,104465,199910,254120,173680]},
   tovar:{morn:[6674,20658,33261,5881,32055],eve:[27034,7465,25213,16818,25183],wknd:[4004,7745,8531,10584,34041]},
+};
+const CATS_NOV_TIME={
+  labels:['26 окт–1 ноя','2–8 ноя'],
+  abon:{morn:[229020,272150],eve:[117050,127380],wknd:[173680,164700]},
+  tovar:{morn:[32055,19727],eve:[25183,78467],wknd:[34041,18026]},
 };
 const TRIAL_PIE_OCT={
   labels:['Марина','Лера','Настя','Аня К','Вика','Лера З','Маша'],
@@ -1855,9 +2028,24 @@ const TRIAL_PIE2_OCT={
   revenue:[205200,     190400,     30300],
   colors: ['#5c6937','#e8c87a','#9b89c4']
 };
+const TRIAL_PIE_NOV={
+  labels:['Марина','Аня К','Настя','Маша','Лера','Лера З','Вика'],
+  conversions:[5,5,2,2,1,1,1],
+  revenue:[66700,56000,27200,15200,13600,7600,7600],
+  colors:['#5C6937','#aeb49c','#e8c87a','#e8a07a','#A2B9C9','#9b89c4','#c9b89c']
+};
+const TRIAL_PIE2_NOV={
+  labels:['4 занятия','8 занятий','20 занятий'],
+  qty:   [9,           7,          1],
+  revenue:[68400,      95200,      30300],
+  colors: ['#5c6937','#e8c87a','#9b89c4']
+};
 
 
-const TOVAR_CATS_WEEKLY={"26 окт–1 ноя":{"Марина":[{"c":"Косметика","t":1940,"i":[{"n":"CH бальзам для губ с суперфудами","s":1110},{"n":"ZELENKA свеча массажная","s":830}]},{"c":"Еда/напитки","t":1300,"i":[{"n":"RAW TO GO пикник (в прозрачной упаковке)","s":750},{"n":"RAW TO GO батончик в коробке","s":380},{"n":"RAW life чипсы","s":170}]},{"c":"Одежда","t":350,"i":[{"n":"носки мерч белые/голубые","s":350}]},{"c":"Для дома","t":180,"i":[{"n":"благовония SATYA","s":180}]}],"Лера З":[{"c":"Одежда","t":19390,"i":[{"n":"PHYSCULTURA шорты","s":7500},{"n":"PHYSCULTURA бра discipline","s":7500},{"n":"BE SELF лонгслив MODAL","s":4390},{"n":"RIVKA футболка slim fit","s":0}]},{"c":"Сертификат","t":10000,"i":[{"n":"Сертификат на сумму (Никитская)","s":10000}]},{"c":"Косметика","t":2670,"i":[{"n":"SOLID SIMPLE арома-роллер","s":2300},{"n":"CH бальзам для губ с суперфудами","s":370}]},{"c":"Еда/напитки","t":1662,"i":[{"n":"RAW TO GO бисквит / пончик","s":1060},{"n":"RAW TO GO батончик в коробке","s":352},{"n":"RAW TO GO пикник (в прозрачной упаковке)","s":250}]},{"c":"Аксессуары","t":755,"i":[{"n":"карта тройка","s":700},{"n":"наклейка","s":55}]},{"c":"Для дома","t":475,"i":[{"n":"SPIRIT RITUALS пало санто 1 шт","s":265},{"n":"благовония SATYA","s":210}]}],"Аня К":[{"c":"Сертификат","t":7080,"i":[{"n":"Сертификат на сумму (Никитская)","s":7080}]},{"c":"Одежда","t":5900,"i":[{"n":"Absolute Venus футболка МОСКВА","s":5900}]},{"c":"Еда/напитки","t":5318,"i":[{"n":"RAW TO GO батончик в коробке","s":1463},{"n":"RAW TO GO бисквит / пончик","s":1020},{"n":"RAW TO GO пикник (в прозрачной упаковке)","s":1000},{"n":"RAW TO GO зефир в шоколаде","s":485},{"n":"SATTVA пастила","s":370},{"n":"NO STRESS вода питьевая 0,5","s":260},{"n":"IKI кокосовая вода 320 ml","s":190},{"n":"BOB шоколад 20 гр","s":180},{"n":"RE-FEEL саше/стик ПОШТУЧНО","s":180},{"n":"RAW life чипсы","s":170}]},{"c":"Аксессуары","t":750,"i":[{"n":"SILK LOVERS шелковая резинка","s":750}]},{"c":"Для дома","t":265,"i":[{"n":"SPIRIT RITUALS пало санто 1 шт","s":265}]},{"c":"Прочее","t":250,"i":[{"n":"Бумажный сертификат и конверт","s":250}]}],"Лера":[{"c":"Косметика","t":2300,"i":[{"n":"SOLID SIMPLE арома-роллер","s":2300}]},{"c":"Еда/напитки","t":1920,"i":[{"n":"RAW TO GO бисквит / пончик","s":901},{"n":"RAW TO GO батончик в коробке","s":542},{"n":"BOB шоколад 20 гр","s":180},{"n":"LU.CO. дрип с собачками","s":153},{"n":"RAW TO GO зефир в шоколаде","s":145}]},{"c":"Аксессуары","t":1781,"i":[{"n":"РАДУГА САМОЦВЕТОВ бусы из кварца с включением турмалина 091653","s":1734},{"n":"наклейка","s":47}]}],"Маша":[{"c":"Косметика","t":480,"i":[{"n":"ZELENKA мыло сфера","s":480}]},{"c":"Еда/напитки","t":357,"i":[{"n":"365 SWEETS конфеты","s":187},{"n":"RAW TO GO зефир в шоколаде","s":170}]}],"Настя":[{"c":"Одежда","t":25075,"i":[{"n":"RIVKA брюки ван сайз","s":11730},{"n":"RIVKA лонгслив","s":10030},{"n":"RIVKA футболка slim fit","s":3315}]},{"c":"Еда/напитки","t":722,"i":[{"n":"RAW TO GO бисквит / пончик","s":217},{"n":"LU.CO. дрип с собачками","s":180},{"n":"RAW TO GO зефир в шоколаде","s":170},{"n":"RAW TO GO батончик в коробке","s":155}]},{"c":"Для дома","t":360,"i":[{"n":"благовония SATYA","s":360}]}]}
+
+const TOVAR_CATS_WEEKLY={"2–8 ноя":{"Марина":[{"c":"Аксессуары","t":3700,"i":[{"n":"АУТЕНТИЧНО кулон на цепочке","s":3700}]},{"c":"Прочее","t":1500,"i":[{"n":"YS2 Аренда шкафчика 1 месяц","s":1500}]},{"c":"Еда/напитки","t":958,"i":[{"n":"RAW TO GO бисквит / пончик","s":490},{"n":"RAW TO GO батончик в коробке","s":162},{"n":"IKI кокосовая вода 320 ml","s":162},{"n":"RAW TO GO зефир в шоколаде","s":145},{"n":"ЭТИКА лимонад","s":0}]},{"c":"Косметика","t":800,"i":[{"n":"LABORATORIUM скраб 300 мл","s":800}]},{"c":"Для дома","t":306,"i":[{"n":"благовония SATYA","s":306}]}],"Лера З":[{"c":"Аксессуары","t":7578,"i":[{"n":"BLIKI колье ПЛАНЕТЫ","s":5400},{"n":"SHOROH блокнот","s":1428},{"n":"SILK LOVERS шелковая резинка","s":750}]},{"c":"Одежда","t":4165,"i":[{"n":"RIVKA лонгслив slim fit","s":4165}]},{"c":"Для дома","t":3640,"i":[{"n":"CONCRETE KINGDOM свеча ЦИЛИНДР (размер M)","s":1690},{"n":"CONCRETE KINGDOM свеча БУДДА","s":1590},{"n":"благовония SATYA","s":360}]},{"c":"Еда/напитки","t":1362,"i":[{"n":"чай в баночке 100 гр","s":590},{"n":"365 SWEETS конфеты","s":440},{"n":"RAW TO GO зефир в шоколаде","s":170},{"n":"RAW TO GO батончик в коробке","s":162},{"n":"RAW TO GO пикник (в прозрачной упаковке)","s":0}]}],"Аня К":[{"c":"Еда/напитки","t":1078,"i":[{"n":"RAW TO GO зефир в шоколаде","s":485},{"n":"RAW TO GO пикник (в прозрачной упаковке)","s":250},{"n":"IKI кокосовая вода 320 ml","s":190},{"n":"LU.CO. дрип с собачками","s":153}]},{"c":"Для дома","t":180,"i":[{"n":"благовония SATYA","s":180}]}],"Лера":[{"c":"Сертификат","t":30000,"i":[{"n":"Сертификат на сумму (Никитская)","s":30000}]},{"c":"Одежда","t":7280,"i":[{"n":"BE SELF топ MOTION","s":3990},{"n":"BE SELF велосипедки MOTION","s":3290}]},{"c":"Косметика","t":3250,"i":[{"n":"OMM BLAT бальзам в кейсе","s":2700},{"n":"ZELENKA дезодорант","s":550}]},{"c":"Прочее","t":3000,"i":[{"n":"YS2 Аренда шкафчика 1 месяц","s":3000}]},{"c":"Еда/напитки","t":1707,"i":[{"n":"RAW TO GO бисквит / пончик","s":795},{"n":"RAW TO GO батончик в коробке","s":542},{"n":"SATTVA пастила","s":370}]},{"c":"Аксессуары","t":750,"i":[{"n":"SILK LOVERS шелковая резинка","s":750}]}],"Маша":[{"c":"Сертификат","t":10000,"i":[{"n":"Сертификат на сумму (Никитская)","s":10000}]},{"c":"Одежда","t":5690,"i":[{"n":"BE SELF лосины MOTION","s":5690}]},{"c":"Аксессуары","t":3000,"i":[{"n":"АУТЕНТИЧНО моносерьга","s":3000}]},{"c":"Еда/напитки","t":1987,"i":[{"n":"LU.CO. дрип с собачками","s":1152},{"n":"IKI кокосовая вода 320 ml","s":380},{"n":"RAW TO GO бисквит / пончик","s":265},{"n":"RAW TO GO батончик в коробке","s":190}]}],"Настя":[{"c":"Одежда","t":18978,"i":[{"n":"INNEME футболка приталенная ZEN","s":5532},{"n":"RIVKA футболка slim fit с топом внутри","s":4900},{"n":"RIVKA лонгслив slim fit","s":4900},{"n":"INNEME брюки клеш SOUL FLARE","s":3647}]},{"c":"Косметика","t":3190,"i":[{"n":"SOLID SIMPLE арома-роллер","s":2300},{"n":"OMM BLAT бальзам в прозрачной упаковке","s":890}]},{"c":"Еда/напитки","t":1763,"i":[{"n":"RAW TO GO бисквит / пончик","s":484},{"n":"RAW TO GO зефир в шоколаде","s":455},{"n":"RAW TO GO пикник (в прозрачной упаковке)","s":406},{"n":"365 SWEETS конфеты","s":220},{"n":"RAW life чипсы","s":170},{"n":"ЭТИКА лимонад","s":27},{"n":"RE-FEEL мармелад","s":0}]},{"c":"Для дома","t":360,"i":[{"n":"благовония SATYA","s":360}]}]}
+,
+"26 окт–1 ноя":{"Марина":[{"c":"Косметика","t":1940,"i":[{"n":"CH бальзам для губ с суперфудами","s":1110},{"n":"ZELENKA свеча массажная","s":830}]},{"c":"Еда/напитки","t":1300,"i":[{"n":"RAW TO GO пикник (в прозрачной упаковке)","s":750},{"n":"RAW TO GO батончик в коробке","s":380},{"n":"RAW life чипсы","s":170}]},{"c":"Одежда","t":350,"i":[{"n":"носки мерч белые/голубые","s":350}]},{"c":"Для дома","t":180,"i":[{"n":"благовония SATYA","s":180}]}],"Лера З":[{"c":"Одежда","t":19390,"i":[{"n":"PHYSCULTURA шорты","s":7500},{"n":"PHYSCULTURA бра discipline","s":7500},{"n":"BE SELF лонгслив MODAL","s":4390},{"n":"RIVKA футболка slim fit","s":0}]},{"c":"Сертификат","t":10000,"i":[{"n":"Сертификат на сумму (Никитская)","s":10000}]},{"c":"Косметика","t":2670,"i":[{"n":"SOLID SIMPLE арома-роллер","s":2300},{"n":"CH бальзам для губ с суперфудами","s":370}]},{"c":"Еда/напитки","t":1662,"i":[{"n":"RAW TO GO бисквит / пончик","s":1060},{"n":"RAW TO GO батончик в коробке","s":352},{"n":"RAW TO GO пикник (в прозрачной упаковке)","s":250}]},{"c":"Аксессуары","t":755,"i":[{"n":"карта тройка","s":700},{"n":"наклейка","s":55}]},{"c":"Для дома","t":475,"i":[{"n":"SPIRIT RITUALS пало санто 1 шт","s":265},{"n":"благовония SATYA","s":210}]}],"Аня К":[{"c":"Сертификат","t":7080,"i":[{"n":"Сертификат на сумму (Никитская)","s":7080}]},{"c":"Одежда","t":5900,"i":[{"n":"Absolute Venus футболка МОСКВА","s":5900}]},{"c":"Еда/напитки","t":5318,"i":[{"n":"RAW TO GO батончик в коробке","s":1463},{"n":"RAW TO GO бисквит / пончик","s":1020},{"n":"RAW TO GO пикник (в прозрачной упаковке)","s":1000},{"n":"RAW TO GO зефир в шоколаде","s":485},{"n":"SATTVA пастила","s":370},{"n":"NO STRESS вода питьевая 0,5","s":260},{"n":"IKI кокосовая вода 320 ml","s":190},{"n":"BOB шоколад 20 гр","s":180},{"n":"RE-FEEL саше/стик ПОШТУЧНО","s":180},{"n":"RAW life чипсы","s":170}]},{"c":"Аксессуары","t":750,"i":[{"n":"SILK LOVERS шелковая резинка","s":750}]},{"c":"Для дома","t":265,"i":[{"n":"SPIRIT RITUALS пало санто 1 шт","s":265}]},{"c":"Прочее","t":250,"i":[{"n":"Бумажный сертификат и конверт","s":250}]}],"Лера":[{"c":"Косметика","t":2300,"i":[{"n":"SOLID SIMPLE арома-роллер","s":2300}]},{"c":"Еда/напитки","t":1920,"i":[{"n":"RAW TO GO бисквит / пончик","s":901},{"n":"RAW TO GO батончик в коробке","s":542},{"n":"BOB шоколад 20 гр","s":180},{"n":"LU.CO. дрип с собачками","s":153},{"n":"RAW TO GO зефир в шоколаде","s":145}]},{"c":"Аксессуары","t":1781,"i":[{"n":"РАДУГА САМОЦВЕТОВ бусы из кварца с включением турмалина 091653","s":1734},{"n":"наклейка","s":47}]}],"Маша":[{"c":"Косметика","t":480,"i":[{"n":"ZELENKA мыло сфера","s":480}]},{"c":"Еда/напитки","t":357,"i":[{"n":"365 SWEETS конфеты","s":187},{"n":"RAW TO GO зефир в шоколаде","s":170}]}],"Настя":[{"c":"Одежда","t":25075,"i":[{"n":"RIVKA брюки ван сайз","s":11730},{"n":"RIVKA лонгслив","s":10030},{"n":"RIVKA футболка slim fit","s":3315}]},{"c":"Еда/напитки","t":722,"i":[{"n":"RAW TO GO бисквит / пончик","s":217},{"n":"LU.CO. дрип с собачками","s":180},{"n":"RAW TO GO зефир в шоколаде","s":170},{"n":"RAW TO GO батончик в коробке","s":155}]},{"c":"Для дома","t":360,"i":[{"n":"благовония SATYA","s":360}]}]}
 ,
 "19–25 окт":{"Марина":[{"c":"Еда/напитки","t":5834,"i":[{"n":"RAW TO GO батончик в коробке","s":1568},{"n":"RAW TO GO печенье \"песочные шарики\"","s":1295},{"n":"чай в баночке 100 гр","s":1092},{"n":"RAW TO GO пикник (в прозрачной упаковке)","s":1000},{"n":"RAW TO GO бисквит / пончик","s":530},{"n":"LU.CO. дрип с собачками","s":180},{"n":"RAW life чипсы","s":170}]},{"c":"Аксессуары","t":1450,"i":[{"n":"YOGA SPACE крем 50 мл","s":1450}]}],"Лера З":[{"c":"Еда/напитки","t":1253,"i":[{"n":"RAW TO GO пикник (в прозрачной упаковке)","s":750},{"n":"ЭТИКА лимонад","s":180},{"n":"RAW life чипсы","s":170},{"n":"RE-FEEL саше/стик ПОШТУЧНО","s":153}]}],"Аня К":[{"c":"Еда/напитки","t":2769,"i":[{"n":"RAW TO GO батончик в коробке","s":1682},{"n":"RAW TO GO печенье \"песочные шарики\"","s":298},{"n":"RAW TO GO пикник (в прозрачной упаковке)","s":250},{"n":"RAW TO GO бисквит / пончик","s":225},{"n":"RAW life чипсы","s":170},{"n":"RAW TO GO зефир в шоколаде","s":145}]},{"c":"Аксессуары","t":55,"i":[{"n":"наклейка","s":55}]}],"Лера":[{"c":"Одежда","t":4800,"i":[{"n":"свитшот ГАРМОНИЯ","s":4800}]},{"c":"Еда/напитки","t":1770,"i":[{"n":"RAW TO GO батончик в коробке","s":969},{"n":"RAW TO GO бисквит / пончик","s":265},{"n":"RAW TO GO пикник (в прозрачной упаковке)","s":213},{"n":"RAW TO GO зефир в шоколаде","s":170},{"n":"LU.CO. дрип с собачками","s":153}]},{"c":"Аксессуары","t":638,"i":[{"n":"SILK LOVERS шелковая резинка","s":638}]}],"Вика":[{"c":"Ковры","t":7400,"i":[{"n":"POSA коврик для йоги YS МЕРЧ","s":7400}]},{"c":"Для дома","t":1210,"i":[{"n":"TEAFORNIA набор благовоний","s":1210}]},{"c":"Еда/напитки","t":540,"i":[{"n":"RAW TO GO батончик в коробке","s":190},{"n":"ЭТИКА лимонад","s":180},{"n":"RAW life чипсы","s":170}]}],"Настя":[{"c":"Аксессуары","t":3000,"i":[{"n":"АУТЕНТИЧНО кольцо","s":3000}]},{"c":"Еда/напитки","t":2565,"i":[{"n":"LU.CO. дрип с собачками","s":720},{"n":"RAW TO GO печенье \"песочные шарики\"","s":557},{"n":"RAW TO GO батончик в коробке","s":503},{"n":"RAW TO GO бисквит / пончик","s":225},{"n":"365 SWEETS конфеты","s":220},{"n":"RAW life чипсы","s":170},{"n":"RAW TO GO зефир в шоколаде","s":170}]}]}
 ,
@@ -2025,6 +2213,13 @@ const NEWBIES_WEEKLY={
     revenue:[59100,42400,7600,13600,7600,7600],
     colors:['#5C6937','#aeb49c','#e8a07a','#e8c87a','#9b89c4','#c9b89c'],
     types:[{label:'4 занятия',qty:7},{label:'8 занятий',qty:4},{label:'20 занятий',qty:1}]
+  },
+  '2–8 ноя':{
+    labels:['Аня К','Лера','Настя','Марина','Маша'],
+    qty:[1,1,1,1,1],
+    revenue:[13600,13600,13600,7600,7600],
+    colors:['#aeb49c','#A2B9C9','#e8c87a','#5C6937','#e8a07a'],
+    types:[{label:'4 занятия',qty:2},{label:'8 занятий',qty:3}]
   },
 };
 const NEWBIES=NEWBIES_WEEKLY['25–31 мая'];
@@ -2406,6 +2601,18 @@ const FIRST_DAY_WEEKLY={
     ],
     total:{trial:12, soldQty:12, soldRub:137900, conv:100}
   },
+  '2–8 ноя':{
+    rows:[
+      {name:'Настя',  trial:9, soldQty:1, soldRub:13600, conv:11, types:[{label:'8 занятий',qty:1}]},
+      {name:'Аня К',  trial:7, soldQty:1, soldRub:13600, conv:14, types:[{label:'8 занятий',qty:1}]},
+      {name:'Марина', trial:6, soldQty:1, soldRub:7600,  conv:17, types:[{label:'4 занятия',qty:1}]},
+      {name:'Лера',   trial:4, soldQty:1, soldRub:13600, conv:25, types:[{label:'8 занятий',qty:1}]},
+      {name:'Лера З', trial:3, soldQty:0, soldRub:0,     conv:0},
+      {name:'Маша',   trial:2, soldQty:1, soldRub:7600,  conv:50, types:[{label:'4 занятия',qty:1}]},
+      {name:'Вика',   trial:0, soldQty:0, soldRub:0,     conv:0},
+    ],
+    total:{trial:31, soldQty:5, soldRub:56000, conv:16}
+  },
 };
 const FIRST_DAY=FIRST_DAY_WEEKLY['25–31 мая'];
 
@@ -2418,6 +2625,7 @@ const MONTHLY={
   jul:null,
   aug:{total:2939714,abon:2674545,tovar:265169},
   oct:{total:2762168,abon:2511174,tovar:250994}, // 1С октябрь 2 585 468 + выплата Фитмост 176 700; tovar = Товары 210 584 + Сертификат 40 410
+  nov:null,
   sep:{total:2641179,abon:2408793,tovar:232386},
 };
 
@@ -2442,11 +2650,12 @@ const planPill=(p)=>{
 // Данные посещений по дням и часам (неделя 15–21 июн)
 const VISITS_DAYS = {
   labels: ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],
-  visits: [45,46,49,39,32,58,61]
+  isWknd: [false,false,false,false,false,true,true],
+  visits: [40,44,51,47,32,52,46]
 };
 const VISITS_HOURS = {
   labels: ['6:00','7:00','8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'],
-  visits: [21,12,7,2,20,33,20,31,34,5,14,23,12,36,60],
+  visits: [16,6,16,3,20,19,28,31,32,10,17,11,28,29,46],
   // утро = до 16 (включая 15), вечер = с 16
   colors: function(){
     return this.labels.map(h=>{
@@ -2460,13 +2669,13 @@ const VISITS_HOURS = {
 const _visitCharts = {};
 
 function switchVisitView(pfx, view, btn){
-  const panelId = pfx==='mar' ? 'visitsPanelMar' : pfx==='may' ? 'visitsPanelMay' : pfx==='jun' ? 'visitsPanelJun' : pfx==='jul' ? 'visitsPanelJul' : pfx==='aug' ? 'visitsPanelAug' : pfx==='sep' ? 'visitsPanelSep' : 'visitsPanelApr';
+  const panelId = pfx==='mar' ? 'visitsPanelMar' : pfx==='may' ? 'visitsPanelMay' : pfx==='jun' ? 'visitsPanelJun' : pfx==='jul' ? 'visitsPanelJul' : pfx==='aug' ? 'visitsPanelAug' : pfx==='sep' ? 'visitsPanelSep' : pfx==='oct' ? 'visitsPanelOct' : pfx==='nov' ? 'visitsPanelNov' : 'visitsPanelApr';
   const panel = document.getElementById(panelId);
   panel.querySelectorAll('.vbtn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 
-  const canvasId='chart'+(pfx==='mar'?'Mar':pfx==='may'?'May':pfx==='jun'?'Jun':pfx==='jul'?'Jul':pfx==='aug'?'Aug':pfx==='sep'?'Sep':'Apr')+'Visits';
-  const legendId='visitLegend'+(pfx==='mar'?'Mar':pfx==='may'?'May':pfx==='jun'?'Jun':pfx==='jul'?'Jul':pfx==='aug'?'Aug':pfx==='sep'?'Sep':'Apr');
+  const canvasId='chart'+(pfx==='mar'?'Mar':pfx==='may'?'May':pfx==='jun'?'Jun':pfx==='jul'?'Jul':pfx==='aug'?'Aug':pfx==='sep'?'Sep':pfx==='oct'?'Oct':pfx==='nov'?'Nov':'Apr')+'Visits';
+  const legendId='visitLegend'+(pfx==='mar'?'Mar':pfx==='may'?'May':pfx==='jun'?'Jun':pfx==='jul'?'Jul':pfx==='aug'?'Aug':pfx==='sep'?'Sep':pfx==='oct'?'Oct':pfx==='nov'?'Nov':'Apr');
 
   // Destroy old chart
   if(_visitCharts[pfx]){_visitCharts[pfx].destroy();delete _visitCharts[pfx];}
@@ -2487,9 +2696,11 @@ function switchVisitView(pfx, view, btn){
       _idxFilt=WEEKS.isJuly?WEEKS.isJuly.map((m,i)=>m?i:-1).filter(i=>i>=0):[];
     } else if(pfx==='aug'){
       _idxFilt=WEEKS.isAugust?WEEKS.isAugust.map((m,i)=>m?i:-1).filter(i=>i>=0):[];
-    } else if(pfx==='sep'||pfx==='oct'){
-      const _augI=WEEKS.isAugust?WEEKS.isAugust.map((m,i)=>m?i:-1).filter(i=>i>=0):[];
-      const _sepI=(pfx==='oct'?WEEKS.isOctober:WEEKS.isSeptember)?(isOct?WEEKS.isOctober:WEEKS.isSeptember).map((m,i)=>m?i:-1).filter(i=>i>=0):[];
+    } else if(pfx==='sep'||pfx==='oct'||pfx==='nov'){
+      const _prevArr=pfx==='nov'?WEEKS.isOctober:pfx==='oct'?WEEKS.isSeptember:WEEKS.isAugust;
+      const _curArr=pfx==='nov'?WEEKS.isNovember:pfx==='oct'?WEEKS.isOctober:WEEKS.isSeptember;
+      const _augI=_prevArr?_prevArr.map((m,i)=>m?i:-1).filter(i=>i>=0):[];
+      const _sepI=_curArr?_curArr.map((m,i)=>m?i:-1).filter(i=>i>=0):[];
       const _lastAug=_augI.length>0?_augI[_augI.length-1]:null;
       _idxFilt=_lastAug!==null?[_lastAug,..._sepI]:_sepI;
     }
@@ -2504,22 +2715,22 @@ function switchVisitView(pfx, view, btn){
     legend.innerHTML=`
       <div class="leg"><div class="leg-dot" style="background:var(--g)"></div>Будни</div>
       <div class="leg"><div class="leg-dot" style="background:var(--o)"></div>Выходные</div>
-      <div class="leg" style="color:var(--muted);font-size:11px">26 окт–1 ноя (посл. неделя) · итого ${VISITS_DAYS.visits.reduce((s,v)=>s+v,0)}</div>`;
+      <div class="leg" style="color:var(--muted);font-size:11px">2–8 ноя (посл. неделя) · итого ${VISITS_DAYS.visits.reduce((s,v)=>s+v,0)}</div>`;
   } else {
     _visitCharts[pfx]=buildVisitHoursChart(canvasId);
     legend.innerHTML=`
-      <div class="leg"><div class="leg-dot" style="background:var(--b)"></div>Утро до 16:00 · 85 чел.</div>
-      <div class="leg"><div class="leg-dot" style="background:#aeb49c"></div>Выходные · 119 чел.</div>
-      <div class="leg"><div class="leg-dot" style="background:var(--o)"></div>Вечер 16:00+ · 126 чел.</div>`;
+      <div class="leg"><div class="leg-dot" style="background:var(--b)"></div>Утро до 16:00 · 97 чел.</div>
+      <div class="leg"><div class="leg-dot" style="background:#aeb49c"></div>Выходные · 98 чел.</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--o)"></div>Вечер 16:00+ · 117 чел.</div>`;
   }
 }
 
 const WEEKS_WINDOW=9; // показываем максимум 2 месяца истории
 function buildVisitWeeksChart(canvasId,isMar,idxFilter){
   // Утро 6-11, День 12-16, Вечер 17+
-  const _morn = [null,null,null,null,null,106,81,71,85, 103,137,100,70,65, 115,130,116,110,67, 95, 108,101,117,111,108,66, 94,72,75,84,90,77,96,85];
-  const _eve  = [null,null,null,null,null,130,126,141,104,108,85, 121,121,106,94, 107,120,101,148,103, 129,137,118,114,161,129,154,129,121,132,118,112,140,126];
-  const _wknd = [null,null,null,null,null,123,94,85,87, 100,96, 99,72,88, 115,85, 85, 83, 102,119, 84, 75, 92, 88, 114,98, 112,105,118,94,101,93,93,119];
+  const _morn = [null,null,null,null,null,106,81,71,85, 103,137,100,70,65, 115,130,116,110,67, 95, 108,101,117,111,108,66, 94,72,75,84,90,77,96,85,97];
+  const _eve  = [null,null,null,null,null,130,126,141,104,108,85, 121,121,106,94, 107,120,101,148,103, 129,137,118,114,161,129,154,129,121,132,118,112,140,126,117];
+  const _wknd = [null,null,null,null,null,123,94,85,87, 100,96, 99,72,88, 115,85, 85, 83, 102,119, 84, 75, 92, 88, 114,98, 112,105,118,94,101,93,93,119,98];
   const _total= WEEKS.visits;
   const _first= WEEKS.first;
   // Apply index filter for May comparison view
@@ -2776,11 +2987,28 @@ const CATS_WEEKLY = {
       {name:'Прочее (др. студии)',               vals:[990, 55945, 6000, 9730, 0, 72665]},
     ],
   },
+  nov: {
+    cols: ['26 окт–1 ноя','2–8 ноя','Итого ноябрь'],
+    rows: [
+      {name:'Абонементы на групповые занятия',   vals:[361950, 277830, 639780]},
+      {name:'Разовые',                           vals:[101800, 120600, 222400]},
+      {name:'Фитмост',                           vals:[0, 0, 0]},
+      {name:'Абонементы индивидуальные',         vals:[25000, 119000, 144000]},
+      {name:'Абонементы майсор и разовые',       vals:[13500, 17300, 30800]},
+      {name:'Аренда',                            vals:[17500, 29500, 47000]},
+      {name:'Мероприятия',                       vals:[0, 0, 0]},
+      {name:'Модификаторы',                      vals:[0, 0, 0]},
+      {name:'Товары',                            vals:[74199, 76220, 150419]},
+      {name:'Подарочный сертификат',             vals:[17080, 40000, 57080]},
+      {name:'ОНЛАЙН',                            vals:[17000, 13500, 30500]},
+      {name:'Прочее (др. студии)',               vals:[0, 0, 0]},
+    ],
+  },
 };
 
 function renderCatsTable(prefix) {
   const data = CATS_WEEKLY[prefix];
-  const tbodyId = prefix === 'apr' ? 'aCatsTableBody' : prefix === 'may' ? 'mayCatsTableBody' : prefix === 'jun' ? 'junCatsTableBody' : prefix === 'jul' ? 'julCatsTableBody' : prefix === 'aug' ? 'augCatsTableBody' : prefix === 'oct' ? 'octCatsTableBody' : prefix === 'sep' ? 'sepCatsTableBody' : 'mCatsTableBody';
+  const tbodyId = prefix === 'apr' ? 'aCatsTableBody' : prefix === 'may' ? 'mayCatsTableBody' : prefix === 'jun' ? 'junCatsTableBody' : prefix === 'jul' ? 'julCatsTableBody' : prefix === 'aug' ? 'augCatsTableBody' : prefix === 'nov' ? 'novCatsTableBody' : prefix === 'oct' ? 'octCatsTableBody' : prefix === 'sep' ? 'sepCatsTableBody' : 'mCatsTableBody';
   const tbody = document.getElementById(tbodyId);
   if (!tbody) return;
   tbody.innerHTML = '';
@@ -2821,7 +3049,7 @@ function showSection(name,btn){
   const pane=document.querySelector('.mpane.active');
   pane.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.sbtn').forEach(b=>b.classList.remove('active'));
-  const pfx=pane.id==='month-mar'?'mar':pane.id==='month-may'?'may':pane.id==='month-jun'?'jun':pane.id==='month-jul'?'jul':pane.id==='month-aug'?'aug':pane.id==='month-sep'?'sep':pane.id==='month-oct'?'oct':'apr';
+  const pfx=pane.id==='month-mar'?'mar':pane.id==='month-may'?'may':pane.id==='month-jun'?'jun':pane.id==='month-jul'?'jul':pane.id==='month-aug'?'aug':pane.id==='month-sep'?'sep':pane.id==='month-nov'?'nov':pane.id==='month-oct'?'oct':'apr';
   const target=pane.querySelector('#'+pfx+'-sec-'+name);
   if(target) target.classList.add('active');
   if(btn) btn.classList.add('active');
@@ -2834,7 +3062,7 @@ function showMonth(id,btn){
   btn.classList.add('active');
   // Badge is always 2026 — no month label
   // badge stays '2026'
-  if(!_rendered[id]&&(id==='mar'||id==='apr'||id==='may'||id==='jun'||id==='jul'||id==='aug'||id==='sep'||id==='oct')){renderMonth(id);_rendered[id]=true;setTimeout(()=>window.dispatchEvent(new Event('resize')),50);}
+  if(!_rendered[id]&&(id==='mar'||id==='apr'||id==='may'||id==='jun'||id==='jul'||id==='aug'||id==='sep'||id==='oct'||id==='nov')){renderMonth(id);_rendered[id]=true;setTimeout(()=>window.dispatchEvent(new Event('resize')),50);}
 }
 
 // ── РЕНДЕРИНГ ─────────────────────────────────
@@ -2844,7 +3072,8 @@ function renderMonth(prefix){
   const isJun=prefix==='jun';
   const isJul=prefix==='jul';
   const isAug=prefix==='aug';
-  const isOct=prefix==='oct';
+  const isNov=prefix==='nov';
+  const isOct=prefix==='oct'||isNov;
   const isSep=prefix==='sep'||isOct;
   const W={
     labels:WEEKS.labels,abon:WEEKS.abon,tovar:WEEKS.tovar,
@@ -2865,15 +3094,15 @@ function renderMonth(prefix){
     const junIdx0=WEEKS.isJune?WEEKS.isJune.map((m,i)=>m?i:-1).filter(i=>i>=0):[];
     const julIdx0=WEEKS.isJuly?WEEKS.isJuly.map((m,i)=>m?i:-1).filter(i=>i>=0):[];
     const augIdx0=WEEKS.isAugust?WEEKS.isAugust.map((m,i)=>m?i:-1).filter(i=>i>=0):[];
-    const sepIdx0=(isOct?WEEKS.isOctober:WEEKS.isSeptember)?(isOct?WEEKS.isOctober:WEEKS.isSeptember).map((m,i)=>m?i:-1).filter(i=>i>=0):[];
+    const sepIdx0=(isNov?WEEKS.isNovember:isOct?WEEKS.isOctober:WEEKS.isSeptember)?(isNov?WEEKS.isNovember:isOct?WEEKS.isOctober:WEEKS.isSeptember).map((m,i)=>m?i:-1).filter(i=>i>=0):[];
     const lastAprI=aprIdx0.length>0?aprIdx0[aprIdx0.length-1]:null;
     const lastJunI=junIdx0.length>0?junIdx0[junIdx0.length-1]:null;
     const julOnlyIdx=WEEKS.isJuly?WEEKS.isJuly.map((m,i)=>(m&&!(WEEKS.isAugust&&WEEKS.isAugust[i]))?i:-1).filter(i=>i>=0):[];
     const lastJulI=julOnlyIdx.length>0?julOnlyIdx[julOnlyIdx.length-1]:null;
-    const _prevSepI=WEEKS.isSeptember?WEEKS.isSeptember.map((m,i)=>m?i:-1).filter(i=>i>=0):[];
+    const _prevSepI=(isNov?WEEKS.isOctober:WEEKS.isSeptember)?(isNov?WEEKS.isOctober:WEEKS.isSeptember).map((m,i)=>m?i:-1).filter(i=>i>=0):[];
     const lastAugI=isOct?(_prevSepI.length>0?_prevSepI[_prevSepI.length-1]:null):(augIdx0.length>0?augIdx0[augIdx0.length-1]:null);
     const curMonthIdx=isMar?marchIdx:isMay?mayIdx0:isJun?junIdx0:isJul?julIdx0:isAug?augIdx0:isSep?sepIdx0:aprIdx0;
-    const official=isMar?null:isMay?(MONTHLY.may||null):isJun?(MONTHLY.jun||null):isJul?(MONTHLY.jul||null):isAug?(MONTHLY.aug||null):isSep?((isOct?MONTHLY.oct:MONTHLY.sep)||null):(MONTHLY.apr||null);
+    const official=isMar?null:isMay?(MONTHLY.may||null):isJun?(MONTHLY.jun||null):isJul?(MONTHLY.jul||null):isAug?(MONTHLY.aug||null):isSep?((isNov?MONTHLY.nov:isOct?MONTHLY.oct:MONTHLY.sep)||null):(MONTHLY.apr||null);
     const totalAll=official?official.total:curMonthIdx.reduce((s,i)=>s+W.total[i],0);
     const abonAll=official?official.abon:curMonthIdx.reduce((s,i)=>s+W.abon[i],0);
     const tovarAll=official?official.tovar:curMonthIdx.reduce((s,i)=>s+W.tovar[i],0);
@@ -2883,7 +3112,7 @@ function renderMonth(prefix){
     const bestLocal=totals.indexOf(Math.max(...totals));
     const bestIdx=curMonthIdx[bestLocal];
 
-    const pfx=prefix==='mar'?'ms':prefix==='may'?'mys':prefix==='jun'?'jus':prefix==='jul'?'juls':prefix==='aug'?'augs':prefix==='oct'?'octs':prefix==='sep'?'seps':'as';
+    const pfx=prefix==='mar'?'ms':prefix==='may'?'mys':prefix==='jun'?'jus':prefix==='jul'?'juls':prefix==='aug'?'augs':prefix==='nov'?'novs':prefix==='oct'?'octs':prefix==='sep'?'seps':'as';
     const safeSet=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
     safeSet(pfx+'-total',fmtK(totalAll));
     safeSet(pfx+'-abon', fmtK(abonAll));
@@ -2905,7 +3134,7 @@ function renderMonth(prefix){
     }else{planEl.textContent='—';planSubEl.textContent='нет данных';}
 
     // Таблица: % плана и накопление — для всех недель где есть план
-    const tb=document.getElementById(prefix==='mar'?'mWeekTable':prefix==='may'?'myWeekTable':prefix==='jun'?'juWeekTable':prefix==='jul'?'julWeekTable':prefix==='aug'?'augWeekTable':prefix==='oct'?'octWeekTable':prefix==='sep'?'sepWeekTable':'aWeekTable');
+    const tb=document.getElementById(prefix==='mar'?'mWeekTable':prefix==='may'?'myWeekTable':prefix==='jun'?'juWeekTable':prefix==='jul'?'julWeekTable':prefix==='aug'?'augWeekTable':prefix==='nov'?'novWeekTable':prefix==='oct'?'octWeekTable':prefix==='sep'?'sepWeekTable':'aWeekTable');
     const tableRows=isMar?marchIdx:isMay?(lastAprI!==null?[lastAprI,...mayIdx0]:mayIdx0):isJun?junIdx0:isJul?(lastJunI!==null?[lastJunI,...julIdx0]:julIdx0):isAug?(lastJulI!==null?[lastJulI,...augIdx0]:augIdx0):isSep?(lastAugI!==null?[lastAugI,...sepIdx0]:sepIdx0):aprIdx0;
     const rows=tableRows;
     let cumul=0; let cumulPlanSum=0;
@@ -2938,12 +3167,12 @@ function renderMonth(prefix){
     const tf=document.createElement('tr');tf.className='tfoot';
     const salesVisRows=isMay?mayIdx0:isJun?junIdx0:isJul?julIdx0:isAug?augIdx0:isSep?sepIdx0:rows;
     const visTotal=salesVisRows.reduce((s,i)=>s+W.visits[i],0);
-    tf.innerHTML=`<td>Итого${isMay?' (май)':isJun?' (июнь)':isJul?' (июль)':isAug?' (август)':isSep?(isOct?' (октябрь)':' (сентябрь)'):''}</td><td class="r">${fmt(abonAll)}</td><td class="r">${fmt(tovarAll)}</td>
+    tf.innerHTML=`<td>Итого${isMay?' (май)':isJun?' (июнь)':isJul?' (июль)':isAug?' (август)':isSep?(isNov?' (ноябрь)':isOct?' (октябрь)':' (сентябрь)'):''}</td><td class="r">${fmt(abonAll)}</td><td class="r">${fmt(tovarAll)}</td>
       <td class="r">${fmt(totalAll)}</td><td class="r">—</td><td class="r">—</td><td class="r">${fmtN(visTotal)}</td>`;
     tb.appendChild(tf);
 
     // [FIX 3] График с линией плана
-    const P=prefix==='mar'?'Mar':prefix==='may'?'May':prefix==='jun'?'Jun':prefix==='jul'?'Jul':prefix==='aug'?'Aug':prefix==='oct'?'Oct':prefix==='sep'?'Sep':'Apr';
+    const P=prefix==='mar'?'Mar':prefix==='may'?'May':prefix==='jun'?'Jun':prefix==='jul'?'Jul':prefix==='aug'?'Aug':prefix==='nov'?'Nov':prefix==='oct'?'Oct':prefix==='sep'?'Sep':'Apr';
     // Для мая показываем последнюю неделю апреля + все недели мая; для июня — только июнь
     const chIdxs=isMay?(lastAprI!==null?[lastAprI,...mayIdx0]:mayIdx0):isJun?junIdx0:isJul?(lastJunI!==null?[lastJunI,...julIdx0]:julIdx0):isAug?(lastJulI!==null?[lastJulI,...augIdx0]:augIdx0):isSep?(lastAugI!==null?[lastAugI,...sepIdx0]:sepIdx0):null;
     const chLabels=chIdxs?chIdxs.map(i=>W.labels[i]):W.labels;
@@ -3040,7 +3269,7 @@ function renderMonth(prefix){
       stackChart('chart'+P+'TovarCats',C.labels,C.tovar,true);
     } else {
       // Для мая/июня/июля/августа/сентября — отдельная структура с данными по неделям
-      const monthTime=isMay?CATS_MAY_TIME:isJul?CATS_JUL_TIME:isAug?CATS_AUG_TIME:isSep?(isOct?CATS_OCT_TIME:CATS_SEP_TIME):CATS_JUN_TIME;
+      const monthTime=isMay?CATS_MAY_TIME:isJul?CATS_JUL_TIME:isAug?CATS_AUG_TIME:isSep?(isNov?CATS_NOV_TIME:isOct?CATS_OCT_TIME:CATS_SEP_TIME):CATS_JUN_TIME;
       const timeLabels=monthTime.labels;
       const abonTime={morn:monthTime.abon.morn,eve:monthTime.abon.eve,wknd:monthTime.abon.wknd};
       const tovarTime={morn:monthTime.tovar.morn,eve:monthTime.tovar.eve,wknd:monthTime.tovar.wknd};
@@ -3076,9 +3305,9 @@ function renderMonth(prefix){
     const junIdxV=WEEKS.isJune?WEEKS.isJune.map((m,i)=>m?i:-1).filter(i=>i>=0):[];
     const julIdxV=WEEKS.isJuly?WEEKS.isJuly.map((m,i)=>m?i:-1).filter(i=>i>=0):[];
     const augIdxV=WEEKS.isAugust?WEEKS.isAugust.map((m,i)=>m?i:-1).filter(i=>i>=0):[];
-    const sepIdxV=(isOct?WEEKS.isOctober:WEEKS.isSeptember)?(isOct?WEEKS.isOctober:WEEKS.isSeptember).map((m,i)=>m?i:-1).filter(i=>i>=0):[];
+    const sepIdxV=(isNov?WEEKS.isNovember:isOct?WEEKS.isOctober:WEEKS.isSeptember)?(isNov?WEEKS.isNovember:isOct?WEEKS.isOctober:WEEKS.isSeptember).map((m,i)=>m?i:-1).filter(i=>i>=0):[];
     const curIdx=isMar?marchIdx[marchIdx.length-1]:isMay?mayIdxV[mayIdxV.length-1]:isJun?(junIdxV.length>0?junIdxV[junIdxV.length-1]:0):isJul?(julIdxV.length>0?julIdxV[julIdxV.length-1]:0):isAug?(augIdxV.length>0?augIdxV[augIdxV.length-1]:0):isSep?(sepIdxV.length>0?sepIdxV[sepIdxV.length-1]:0):aprIdx[aprIdx.length-1];
-    const pfx=prefix==='mar'?'mv':prefix==='may'?'myv':prefix==='jun'?'juv':prefix==='jul'?'julv':prefix==='aug'?'augv':prefix==='oct'?'octv':prefix==='sep'?'sepv':'av';
+    const pfx=prefix==='mar'?'mv':prefix==='may'?'myv':prefix==='jun'?'juv':prefix==='jul'?'julv':prefix==='aug'?'augv':prefix==='nov'?'novv':prefix==='oct'?'octv':prefix==='sep'?'sepv':'av';
     const safeSetV=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
     // Суммарные посещения за месяц
     const aprIdx2=aprIdx;
@@ -3138,7 +3367,7 @@ function renderMonth(prefix){
     }
 
     // Построение через общий билдер (поддерживает переключение)
-    const P=prefix==='mar'?'Mar':prefix==='may'?'May':prefix==='jun'?'Jun':prefix==='jul'?'Jul':prefix==='aug'?'Aug':prefix==='oct'?'Oct':prefix==='sep'?'Sep':'Apr';
+    const P=prefix==='mar'?'Mar':prefix==='may'?'May':prefix==='jun'?'Jun':prefix==='jul'?'Jul':prefix==='aug'?'Aug':prefix==='nov'?'Nov':prefix==='oct'?'Oct':prefix==='sep'?'Sep':'Apr';
     const lastAprIdxV2=aprIdx.length>0?aprIdx[aprIdx.length-1]:null;
     const lastJunIdxV=junIdxV.length>0?junIdxV[junIdxV.length-1]:null;
     const julOnlyIdxV=WEEKS.isJuly?WEEKS.isJuly.map((m,i)=>(m&&!(WEEKS.isAugust&&WEEKS.isAugust[i]))?i:-1).filter(i=>i>=0):[];
@@ -3147,9 +3376,9 @@ function renderMonth(prefix){
     _visitCharts[prefix]=buildVisitWeeksChart('chart'+P+'Visits',isMar,visIdxFilter);
 
     // Таблица посещений
-    const tb=document.getElementById(prefix==='mar'?'mVisitTable':prefix==='may'?'myVisitTable':prefix==='jun'?'juVisitTable':prefix==='jul'?'julVisitTable':prefix==='aug'?'augVisitTable':prefix==='oct'?'octVisitTable':prefix==='sep'?'sepVisitTable':'aVisitTable');
+    const tb=document.getElementById(prefix==='mar'?'mVisitTable':prefix==='may'?'myVisitTable':prefix==='jun'?'juVisitTable':prefix==='jul'?'julVisitTable':prefix==='aug'?'augVisitTable':prefix==='nov'?'novVisitTable':prefix==='oct'?'octVisitTable':prefix==='sep'?'sepVisitTable':'aVisitTable');
     const lastAprIdxV=aprIdx.length>0?aprIdx[aprIdx.length-1]:null;
-    const visRows=isMar?marchIdx:isMay?(lastAprIdxV!==null?[lastAprIdxV,...mayIdxV]:mayIdxV):isJun?junIdxV:isJul?(lastJunIdxV!==null?[lastJunIdxV,...julIdxV]:julIdxV):isAug?(lastJulIdxV!==null?[lastJulIdxV,...augIdxV]:augIdxV):isSep?(augIdxV.length>0?[...augIdxV,...sepIdxV]:sepIdxV):aprIdx;
+    const visRows=isMar?marchIdx:isMay?(lastAprIdxV!==null?[lastAprIdxV,...mayIdxV]:mayIdxV):isJun?junIdxV:isJul?(lastJunIdxV!==null?[lastJunIdxV,...julIdxV]:julIdxV):isAug?(lastJulIdxV!==null?[lastJulIdxV,...augIdxV]:augIdxV):isSep?(isOct?(_pv=>_pv.length>0?[_pv[_pv.length-1],...sepIdxV]:sepIdxV)(((isNov?WEEKS.isOctober:WEEKS.isSeptember)||[]).map((m,i)=>m?i:-1).filter(i=>i>=0)):(augIdxV.length>0?[...augIdxV,...sepIdxV]:sepIdxV)):aprIdx;
     const rows=visRows;
     rows.forEach((i,li)=>{
       const tr=document.createElement('tr');
@@ -3176,17 +3405,17 @@ function renderMonth(prefix){
     const junIdxC=WEEKS.isJune?WEEKS.isJune.map((m,i)=>m?i:-1).filter(i=>i>=0):[];
     const julIdxC=WEEKS.isJuly?WEEKS.isJuly.map((m,i)=>m?i:-1).filter(i=>i>=0):[];
     const augIdxC=WEEKS.isAugust?WEEKS.isAugust.map((m,i)=>m?i:-1).filter(i=>i>=0):[];
-    const sepIdxC=(isOct?WEEKS.isOctober:WEEKS.isSeptember)?(isOct?WEEKS.isOctober:WEEKS.isSeptember).map((m,i)=>m?i:-1).filter(i=>i>=0):[];
+    const sepIdxC=(isNov?WEEKS.isNovember:isOct?WEEKS.isOctober:WEEKS.isSeptember)?(isNov?WEEKS.isNovember:isOct?WEEKS.isOctober:WEEKS.isSeptember).map((m,i)=>m?i:-1).filter(i=>i>=0):[];
     const curIdx=isMar?marchIdx[marchIdx.length-1]:isMay?mayIdxC[mayIdxC.length-1]:isJun?(junIdxC.length>0?junIdxC[junIdxC.length-1]:0):isJul?(julIdxC.length>0?julIdxC[julIdxC.length-1]:0):isAug?(augIdxC.length>0?augIdxC[augIdxC.length-1]:0):isSep?(sepIdxC.length>0?sepIdxC[sepIdxC.length-1]:0):aprIdx[aprIdx.length-1];
     const convPct=T.conversion.map((c,i)=>T.trial[i]>0?Math.round(c/T.trial[i]*100):null);
     const marConvPct=convPct.filter((_,i)=>T.isMarch[i]).filter(v=>v!=null);
     const avgConv=Math.round(marConvPct.reduce((s,v)=>s+v,0)/marConvPct.length);
-    const pfx=prefix==='mar'?'mtr':prefix==='may'?'mytr':prefix==='jun'?'jutr':prefix==='jul'?'jultr':prefix==='aug'?'augtr':prefix==='oct'?'octtr':prefix==='sep'?'septr':'atr';
+    const pfx=prefix==='mar'?'mtr':prefix==='may'?'mytr':prefix==='jun'?'jutr':prefix==='jul'?'jultr':prefix==='aug'?'augtr':prefix==='nov'?'novtr':prefix==='oct'?'octtr':prefix==='sep'?'septr':'atr';
     const trialEl=document.getElementById(pfx+'-trial');if(trialEl)trialEl.textContent=fmtN(T.trial[curIdx]);
     const convEl=document.getElementById(pfx+'-conv');if(convEl)convEl.textContent=convPct[curIdx]!=null?convPct[curIdx]+'%':'—';
     const avgEl=document.getElementById(pfx+'-avg');if(avgEl)avgEl.textContent=avgConv+'%';
 
-    const P=prefix==='mar'?'Mar':prefix==='may'?'May':prefix==='jun'?'Jun':prefix==='jul'?'Jul':prefix==='aug'?'Aug':prefix==='oct'?'Oct':prefix==='sep'?'Sep':'Apr';
+    const P=prefix==='mar'?'Mar':prefix==='may'?'May':prefix==='jun'?'Jun':prefix==='jul'?'Jul':prefix==='aug'?'Aug':prefix==='nov'?'Nov':prefix==='oct'?'Oct':prefix==='sep'?'Sep':'Apr';
     const trialRest=T.trial.map((v,i)=>v-(T.conversion[i]||0));
     const _wS=Math.max(0,T.labels.length-WEEKS_WINDOW);
     const TW={labels:T.labels.slice(_wS),conversion:T.conversion.slice(_wS),trial:T.trial.slice(_wS),isMarch:T.isMarch.slice(_wS)};
@@ -3214,15 +3443,15 @@ function renderMonth(prefix){
           y:{stacked:true,grid:{color:'rgba(92,105,55,.07)'},title:{display:true,text:'Пробных, шт.'}},
           y1:{position:'right',grid:{display:false},title:{display:true,text:'Конверсия, %'},ticks:{callback:v=>v+'%'}}}}
     });
-    {const _tp=isJun?TRIAL_PIE_JUN:isAug?TRIAL_PIE_AUG:isSep?(isOct?TRIAL_PIE_OCT:TRIAL_PIE_SEP):TRIAL_PIE;
+    {const _tp=isJun?TRIAL_PIE_JUN:isAug?TRIAL_PIE_AUG:isSep?(isNov?TRIAL_PIE_NOV:isOct?TRIAL_PIE_OCT:TRIAL_PIE_SEP):TRIAL_PIE;
     new Chart(document.getElementById('chart'+P+'TrialPie'),{type:'doughnut',
       data:{labels:_tp.labels,datasets:[{data:_tp.conversions,backgroundColor:_tp.colors,borderWidth:2}]},
       options:{responsive:true,maintainAspectRatio:false,plugins:{datalabels:{color:'white',font:{weight:'700',size:12},formatter:v=>v},legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.raw+' конв., '+fmt(_tp.revenue[ctx.dataIndex])}}}}
     });
-    const leg1=document.getElementById(prefix==='mar'?'mTrialPieLegend':prefix==='may'?'myTrialPieLegend':prefix==='jun'?'juTrialPieLegend':prefix==='jul'?'julTrialPieLegend':prefix==='aug'?'augTrialPieLegend':prefix==='oct'?'octTrialPieLegend':prefix==='sep'?'sepTrialPieLegend':'aTrialPieLegend');
+    const leg1=document.getElementById(prefix==='mar'?'mTrialPieLegend':prefix==='may'?'myTrialPieLegend':prefix==='jun'?'juTrialPieLegend':prefix==='jul'?'julTrialPieLegend':prefix==='aug'?'augTrialPieLegend':prefix==='nov'?'novTrialPieLegend':prefix==='oct'?'octTrialPieLegend':prefix==='sep'?'sepTrialPieLegend':'aTrialPieLegend');
     if(leg1)_tp.labels.forEach((lbl,i)=>{leg1.innerHTML+=`<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><div style="width:10px;height:10px;border-radius:2px;background:${_tp.colors[i]};flex-shrink:0"></div><span><b>${lbl}</b> — ${_tp.conversions[i]} конв., ${fmt(_tp.revenue[i])}</span></div>`;});
     }
-    {const _tp2=isJun?TRIAL_PIE2_JUN:isJul?TRIAL_PIE2_JUL:isAug?TRIAL_PIE2_AUG:isSep?(isOct?TRIAL_PIE2_OCT:TRIAL_PIE2_SEP):TRIAL_PIE2;
+    {const _tp2=isJun?TRIAL_PIE2_JUN:isJul?TRIAL_PIE2_JUL:isAug?TRIAL_PIE2_AUG:isSep?(isNov?TRIAL_PIE2_NOV:isOct?TRIAL_PIE2_OCT:TRIAL_PIE2_SEP):TRIAL_PIE2;
     new Chart(document.getElementById('chart'+P+'TrialPie2'),{type:'doughnut',
       data:{labels:_tp2.labels,datasets:[{data:_tp2.qty,backgroundColor:_tp2.colors,borderWidth:2}]},
       plugins:[{id:'outlabel',afterDraw(chart){
@@ -3279,7 +3508,7 @@ function renderMonth(prefix){
 
   // ── 5. АДМИНИСТРАТОРЫ ──
   (function(){
-    const latestWeek=isMay?MAY_ADMIN_WEEKS[MAY_ADMIN_WEEKS.length-1]:isJun?(JUN_ADMIN_WEEKS.length>0?JUN_ADMIN_WEEKS[JUN_ADMIN_WEEKS.length-1]:null):isJul?(JUL_ADMIN_WEEKS.length>0?JUL_ADMIN_WEEKS[JUL_ADMIN_WEEKS.length-1]:null):isAug?(AUG_ADMIN_WEEKS.length>0?AUG_ADMIN_WEEKS[AUG_ADMIN_WEEKS.length-1]:null):isSep?((isOct?OCT_ADMIN_WEEKS:SEP_ADMIN_WEEKS).length>0?(isOct?OCT_ADMIN_WEEKS:SEP_ADMIN_WEEKS)[(isOct?OCT_ADMIN_WEEKS:SEP_ADMIN_WEEKS).length-1]:null):'27 апр–3 мая';
+    const latestWeek=isMay?MAY_ADMIN_WEEKS[MAY_ADMIN_WEEKS.length-1]:isJun?(JUN_ADMIN_WEEKS.length>0?JUN_ADMIN_WEEKS[JUN_ADMIN_WEEKS.length-1]:null):isJul?(JUL_ADMIN_WEEKS.length>0?JUL_ADMIN_WEEKS[JUL_ADMIN_WEEKS.length-1]:null):isAug?(AUG_ADMIN_WEEKS.length>0?AUG_ADMIN_WEEKS[AUG_ADMIN_WEEKS.length-1]:null):isSep?((isNov?NOV_ADMIN_WEEKS:isOct?OCT_ADMIN_WEEKS:SEP_ADMIN_WEEKS).length>0?(isNov?NOV_ADMIN_WEEKS:isOct?OCT_ADMIN_WEEKS:SEP_ADMIN_WEEKS)[(isNov?NOV_ADMIN_WEEKS:isOct?OCT_ADMIN_WEEKS:SEP_ADMIN_WEEKS).length-1]:null):'27 апр–3 мая';
     const cur=prepAdmins(latestWeek?ADMINS_WEEKLY[latestWeek]||[]:[]);
     const totalAbon=cur.reduce((s,a)=>s+a.abon,0);
     const totalTovar=cur.reduce((s,a)=>s+a.tovar,0);
@@ -3287,7 +3516,7 @@ function renderMonth(prefix){
     const totalNew=cur.reduce((s,a)=>s+a.newQty,0);
     const totalNewR=cur.reduce((s,a)=>s+a.newRub,0);
     const leader=cur.filter(a=>a.shifts>0).sort((p,q)=>q.perShift-p.perShift)[0];
-    const pfx=prefix==='mar'?'ma':prefix==='may'?'mya':prefix==='jun'?'jua':prefix==='jul'?'jula':prefix==='aug'?'auga':prefix==='oct'?'octa':prefix==='sep'?'sepa':'aa';
+    const pfx=prefix==='mar'?'ma':prefix==='may'?'mya':prefix==='jun'?'jua':prefix==='jul'?'jula':prefix==='aug'?'auga':prefix==='nov'?'nova':prefix==='oct'?'octa':prefix==='sep'?'sepa':'aa';
     const safeSetA=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
     safeSetA(pfx+'-total',cur.length?fmtK(totalAll):'—');
     safeSetA(pfx+'-abon',cur.length?fmtK(totalAbon):'—');
@@ -3296,7 +3525,7 @@ function renderMonth(prefix){
     safeSetA(pfx+'-avg',cur.length&&totalShiftsAll?fmtK(Math.round(totalAll/totalShiftsAll)):'—');
     if(leader){safeSetA(pfx+'-leader',leader.name);safeSetA(pfx+'-leader-val',fmt(leader.perShift)+' / смену');}
     safeSetA(pfx+'-new',totalNew+' чел.');safeSetA(pfx+'-new-rub',fmt(totalNewR));
-    if(prefix==='apr'||prefix==='may'||prefix==='jun'||prefix==='jul'||prefix==='aug'||prefix==='sep'||prefix==='oct'){const avgNew=totalNew>0?Math.round(totalNewR/totalNew):0;const el=document.getElementById(pfx+'-new-avg');if(el)el.textContent=avgNew>0?fmtK(avgNew):'—';}
+    if(prefix==='apr'||prefix==='may'||prefix==='jun'||prefix==='jul'||prefix==='aug'||prefix==='sep'||prefix==='oct'||prefix==='nov'){const avgNew=totalNew>0?Math.round(totalNewR/totalNew):0;const el=document.getElementById(pfx+'-new-avg');if(el)el.textContent=avgNew>0?fmtK(avgNew):'—';}
   })();
 
   // ── Функция рендера детализации по выбранной неделе ──
@@ -3304,10 +3533,10 @@ function renderMonth(prefix){
 
   function renderAdminWeek(weekKey){
     // Обновить метку
-    const lbl=document.getElementById(prefix==='may'?'mayAdminWeekLabel':prefix==='jun'?'junAdminWeekLabel':prefix==='jul'?'julAdminWeekLabel':prefix==='aug'?'augAdminWeekLabel':prefix==='oct'?'octAdminWeekLabel':prefix==='sep'?'sepAdminWeekLabel':'adminWeekLabel');
-    if(lbl) lbl.textContent=(weekKey==='total'||weekKey==='Итог июня'||weekKey==='Итог июля'||weekKey==='Итог августа'||(weekKey==='Итог сентября'||weekKey==='Итог октября'))?(isMay?'Итог мая':isJun?'Итог июня':isJul?'Итог июля':isAug?'Итог августа':isSep?(isOct?'Итог октября':'Итог сентября'):'Итог апреля'):weekKey;
-    const chartLbl=document.getElementById(prefix==='may'?'mayAdminChartLabel':prefix==='jun'?'junAdminChartLabel':prefix==='jul'?'julAdminChartLabel':prefix==='aug'?'augAdminChartLabel':prefix==='oct'?'octAdminChartLabel':prefix==='sep'?'sepAdminChartLabel':'adminChartLabel');
-    if(chartLbl) chartLbl.textContent=(weekKey==='total'||weekKey==='Итог июня'||weekKey==='Итог июля'||weekKey==='Итог августа'||(weekKey==='Итог сентября'||weekKey==='Итог октября'))?(isMay?'Итог мая':isJun?'Итог июня':isJul?'Итог июля':isAug?'Итог августа':isSep?(isOct?'Итог октября':'Итог сентября'):'Итог апреля'):weekKey;
+    const lbl=document.getElementById(prefix==='may'?'mayAdminWeekLabel':prefix==='jun'?'junAdminWeekLabel':prefix==='jul'?'julAdminWeekLabel':prefix==='aug'?'augAdminWeekLabel':prefix==='nov'?'novAdminWeekLabel':prefix==='oct'?'octAdminWeekLabel':prefix==='sep'?'sepAdminWeekLabel':'adminWeekLabel');
+    if(lbl) lbl.textContent=(weekKey==='total'||weekKey==='Итог июня'||weekKey==='Итог июля'||weekKey==='Итог августа'||(weekKey==='Итог сентября'||weekKey==='Итог октября'||weekKey==='Итог ноября'))?(isMay?'Итог мая':isJun?'Итог июня':isJul?'Итог июля':isAug?'Итог августа':isSep?(isNov?'Итог ноября':isOct?'Итог октября':'Итог сентября'):'Итог апреля'):weekKey;
+    const chartLbl=document.getElementById(prefix==='may'?'mayAdminChartLabel':prefix==='jun'?'junAdminChartLabel':prefix==='jul'?'julAdminChartLabel':prefix==='aug'?'augAdminChartLabel':prefix==='nov'?'novAdminChartLabel':prefix==='oct'?'octAdminChartLabel':prefix==='sep'?'sepAdminChartLabel':'adminChartLabel');
+    if(chartLbl) chartLbl.textContent=(weekKey==='total'||weekKey==='Итог июня'||weekKey==='Итог июля'||weekKey==='Итог августа'||(weekKey==='Итог сентября'||weekKey==='Итог октября'||weekKey==='Итог ноября'))?(isMay?'Итог мая':isJun?'Итог июня':isJul?'Итог июля':isAug?'Итог августа':isSep?(isNov?'Итог ноября':isOct?'Итог октября':'Итог сентября'):'Итог апреля'):weekKey;
 
     // Собрать данные
     let admins, newbies, firstDay;
@@ -3402,9 +3631,9 @@ function renderMonth(prefix){
       const fdTotAug={trial:fdRowsAug.reduce((s,r)=>s+r.trial,0),soldQty:fdRowsAug.reduce((s,r)=>s+r.soldQty,0),soldRub:fdRowsAug.reduce((s,r)=>s+r.soldRub,0)};
       fdTotAug.conv=fdTotAug.trial>0?Math.round(fdTotAug.soldQty/fdTotAug.trial*100):0;
       firstDay={rows:fdRowsAug,total:fdTotAug};
-    } else if((weekKey==='Итог сентября'||weekKey==='Итог октября')){
+    } else if((weekKey==='Итог сентября'||weekKey==='Итог октября'||weekKey==='Итог ноября')){
       const sepAdmMap={};
-      (isOct?OCT_WEEKS_ACTUAL:SEP_WEEKS_ACTUAL).forEach(k=>{(ADMINS_WEEKLY[k]||[]).forEach(a=>{
+      (isNov?NOV_WEEKS_ACTUAL:isOct?OCT_WEEKS_ACTUAL:SEP_WEEKS_ACTUAL).forEach(k=>{(ADMINS_WEEKLY[k]||[]).forEach(a=>{
         if(!sepAdmMap[a.name])sepAdmMap[a.name]={name:a.name,abon:0,tovar:0,shifts:0,shifts_morn:0,shifts_eve:0,shifts_p:0,newQty:0,newRub:0,appQty:0};
         const m=sepAdmMap[a.name];
         m.abon+=a.abon;m.tovar+=a.tovar;m.shifts+=a.shifts||0;
@@ -3413,11 +3642,11 @@ function renderMonth(prefix){
       });});
       admins=prepAdmins(Object.values(sepAdmMap));
       const nMapSep={};
-      (isOct?OCT_WEEKS_ACTUAL:SEP_WEEKS_ACTUAL).forEach(k=>{const nb=NEWBIES_WEEKLY[k];if(!nb)return;nb.labels.forEach((l,i)=>{if(!nMapSep[l])nMapSep[l]={qty:0,rev:0,color:nb.colors[i]};nMapSep[l].qty+=nb.qty[i];nMapSep[l].rev+=nb.revenue[i];});});
+      (isNov?NOV_WEEKS_ACTUAL:isOct?OCT_WEEKS_ACTUAL:SEP_WEEKS_ACTUAL).forEach(k=>{const nb=NEWBIES_WEEKLY[k];if(!nb)return;nb.labels.forEach((l,i)=>{if(!nMapSep[l])nMapSep[l]={qty:0,rev:0,color:nb.colors[i]};nMapSep[l].qty+=nb.qty[i];nMapSep[l].rev+=nb.revenue[i];});});
       const nlSep=Object.keys(nMapSep);
       newbies={labels:nlSep,qty:nlSep.map(l=>nMapSep[l].qty),revenue:nlSep.map(l=>nMapSep[l].rev),colors:nlSep.map(l=>nMapSep[l].color)};
       const fdMapSep={};
-      (isOct?OCT_WEEKS_ACTUAL:SEP_WEEKS_ACTUAL).forEach(k=>{const fd=FIRST_DAY_WEEKLY[k];if(!fd||!fd.rows.length)return;fd.rows.forEach(r=>{if(!fdMapSep[r.name])fdMapSep[r.name]={trial:0,soldQty:0,soldRub:0};fdMapSep[r.name].trial+=r.trial;fdMapSep[r.name].soldQty+=r.soldQty;fdMapSep[r.name].soldRub+=r.soldRub;});});
+      (isNov?NOV_WEEKS_ACTUAL:isOct?OCT_WEEKS_ACTUAL:SEP_WEEKS_ACTUAL).forEach(k=>{const fd=FIRST_DAY_WEEKLY[k];if(!fd||!fd.rows.length)return;fd.rows.forEach(r=>{if(!fdMapSep[r.name])fdMapSep[r.name]={trial:0,soldQty:0,soldRub:0};fdMapSep[r.name].trial+=r.trial;fdMapSep[r.name].soldQty+=r.soldQty;fdMapSep[r.name].soldRub+=r.soldRub;});});
       const fdNamesSep=Object.keys(fdMapSep);
       const fdRowsSep=fdNamesSep.map(n=>{const d=fdMapSep[n];const conv=d.trial>0?Math.round(d.soldQty/d.trial*100):0;return{name:n,...d,conv};});
       const fdTotSep={trial:fdRowsSep.reduce((s,r)=>s+r.trial,0),soldQty:fdRowsSep.reduce((s,r)=>s+r.soldQty,0),soldRub:fdRowsSep.reduce((s,r)=>s+r.soldRub,0)};
@@ -3430,7 +3659,7 @@ function renderMonth(prefix){
     }
 
     // ── Обновить карточки шапки ──
-    {const pfxA=prefix==='mar'?'ma':prefix==='may'?'mya':prefix==='jun'?'jua':prefix==='jul'?'jula':prefix==='aug'?'auga':prefix==='oct'?'octa':prefix==='sep'?'sepa':'aa';
+    {const pfxA=prefix==='mar'?'ma':prefix==='may'?'mya':prefix==='jun'?'jua':prefix==='jul'?'jula':prefix==='aug'?'auga':prefix==='nov'?'nova':prefix==='oct'?'octa':prefix==='sep'?'sepa':'aa';
     const safeA=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
     const tAbon=admins.reduce((s,a)=>s+a.abon,0);
     const tTovar=admins.reduce((s,a)=>s+a.tovar,0);
@@ -3446,11 +3675,11 @@ function renderMonth(prefix){
     if(ldrCard){safeA(pfxA+'-leader',ldrCard.name);safeA(pfxA+'-leader-val',fmt(ldrCard.perShift)+' / смену');}
     safeA(pfxA+'-new',   tNewQty+' чел.');
     safeA(pfxA+'-new-rub', fmt(tNewRub));
-    if(prefix==='apr'||prefix==='may'||prefix==='jun'||prefix==='jul'||prefix==='aug'||prefix==='sep'||prefix==='oct'){const avgNew=tNewQty>0?Math.round(tNewRub/tNewQty):0;const el=document.getElementById(pfxA+'-new-avg');if(el)el.textContent=avgNew>0?fmtK(avgNew):'—';}
+    if(prefix==='apr'||prefix==='may'||prefix==='jun'||prefix==='jul'||prefix==='aug'||prefix==='sep'||prefix==='oct'||prefix==='nov'){const avgNew=tNewQty>0?Math.round(tNewRub/tNewQty):0;const el=document.getElementById(pfxA+'-new-avg');if(el)el.textContent=avgNew>0?fmtK(avgNew):'—';}
     }
 
     // Таблица детализации
-    const tb=document.getElementById(prefix==='may'?'mayAdminTable':prefix==='jun'?'junAdminTable':prefix==='jul'?'julAdminTable':prefix==='aug'?'augAdminTable':prefix==='oct'?'octAdminTable':prefix==='sep'?'sepAdminTable':'aAdminTable');
+    const tb=document.getElementById(prefix==='may'?'mayAdminTable':prefix==='jun'?'junAdminTable':prefix==='jul'?'julAdminTable':prefix==='aug'?'augAdminTable':prefix==='nov'?'novAdminTable':prefix==='oct'?'octAdminTable':prefix==='sep'?'sepAdminTable':'aAdminTable');
     if(!tb)return;tb.innerHTML='';
     const _showAppQty=false; // колонку «Приложение» больше не считаем
     const maxTotal=Math.max(...admins.map(a=>a.total),1);
@@ -3512,7 +3741,7 @@ function renderMonth(prefix){
           scales:{x:{grid:{color:'rgba(92,105,55,.07)'},ticks:{callback:v=>v.toLocaleString('ru-RU')}},y:{grid:{display:false}}}}
       });
     }
-    const legEl=document.getElementById(prefix==='may'?'mayNewbiesLegend':prefix==='jun'?'junNewbiesLegend':prefix==='jul'?'julNewbiesLegend':prefix==='aug'?'augNewbiesLegend':prefix==='oct'?'octNewbiesLegend':prefix==='sep'?'sepNewbiesLegend':'aNewbiesLegend');if(legEl)legEl.innerHTML='';
+    const legEl=document.getElementById(prefix==='may'?'mayNewbiesLegend':prefix==='jun'?'junNewbiesLegend':prefix==='jul'?'julNewbiesLegend':prefix==='aug'?'augNewbiesLegend':prefix==='nov'?'novNewbiesLegend':prefix==='oct'?'octNewbiesLegend':prefix==='sep'?'sepNewbiesLegend':'aNewbiesLegend');if(legEl)legEl.innerHTML='';
     if(legEl&&newbies.labels.length){
       const tRev=newbies.revenue.reduce((s,v)=>s+v,0),tQty=newbies.qty.reduce((s,v)=>s+v,0);
       newbies.labels.forEach((l,i)=>{const avg=newbies.qty[i]>0?Math.round(newbies.revenue[i]/newbies.qty[i]):0;legEl.innerHTML+=`<div style="display:flex;align-items:center;gap:8px"><div style="width:10px;height:10px;border-radius:2px;background:${newbies.colors[i]};flex-shrink:0"></div><span><b>${l}</b> — ${newbies.qty[i]} чел., ${fmt(newbies.revenue[i])}, ср.чек ${fmt(avg)}</span></div>`;});
@@ -3520,7 +3749,7 @@ function renderMonth(prefix){
     } else if(legEl){legEl.innerHTML='<div style="color:var(--muted);font-size:12px">Нет данных</div>';}
 
     // Типы абонементов First
-    const typesEl=document.getElementById(prefix==='may'?'mayNewbiesTypes':prefix==='jun'?'junNewbiesTypes':prefix==='jul'?'julNewbiesTypes':prefix==='aug'?'augNewbiesTypes':prefix==='oct'?'octNewbiesTypes':prefix==='sep'?'sepNewbiesTypes':'aNewbiesTypes');
+    const typesEl=document.getElementById(prefix==='may'?'mayNewbiesTypes':prefix==='jun'?'junNewbiesTypes':prefix==='jul'?'julNewbiesTypes':prefix==='aug'?'augNewbiesTypes':prefix==='nov'?'novNewbiesTypes':prefix==='oct'?'octNewbiesTypes':prefix==='sep'?'sepNewbiesTypes':'aNewbiesTypes');
     if(typesEl){
       const types=newbies.types;
       if(types&&types.length){
@@ -3534,8 +3763,8 @@ function renderMonth(prefix){
     }
 
     // Таблица FIRST_DAY
-    const fdTb=document.getElementById(prefix==='may'?'mayFirstDayTable':prefix==='jun'?'junFirstDayTable':prefix==='jul'?'julFirstDayTable':prefix==='aug'?'augFirstDayTable':prefix==='oct'?'octFirstDayTable':prefix==='sep'?'sepFirstDayTable':'aFirstDayTable');if(fdTb)fdTb.innerHTML='';
-    const _hasTypeCol=(prefix==='jul'||prefix==='aug'||prefix==='sep'||prefix==='oct');
+    const fdTb=document.getElementById(prefix==='may'?'mayFirstDayTable':prefix==='jun'?'junFirstDayTable':prefix==='jul'?'julFirstDayTable':prefix==='aug'?'augFirstDayTable':prefix==='nov'?'novFirstDayTable':prefix==='oct'?'octFirstDayTable':prefix==='sep'?'sepFirstDayTable':'aFirstDayTable');if(fdTb)fdTb.innerHTML='';
+    const _hasTypeCol=(prefix==='jul'||prefix==='aug'||prefix==='sep'||prefix==='oct'||prefix==='nov');
     const typeColors=['#5c6937','#A2B9C9','#F0803B','#9b89c4','#aeb49c','#e8c87a'];
     const _mkChips=types=>types.map((t,i)=>`<span style="display:inline-flex;align-items:center;gap:4px;background:${typeColors[i%typeColors.length]}18;border:1px solid ${typeColors[i%typeColors.length]}44;border-radius:16px;padding:2px 8px;font-size:11px;margin:1px 3px 1px 0"><span style="width:6px;height:6px;border-radius:50%;background:${typeColors[i%typeColors.length]};flex-shrink:0"></span>${t.label} — ${t.qty} шт.</span>`).join('');
     if(fdTb&&firstDay.rows.length){
@@ -3570,7 +3799,7 @@ function renderMonth(prefix){
       fdTb.appendChild(tfoot);
     }
     // ── Разбивка смен для Итог мая ──
-    const shiftsBl=document.getElementById(prefix==='may'?'mayShiftsBreakdown':prefix==='jun'?'junShiftsBreakdown':prefix==='jul'?'julShiftsBreakdown':prefix==='aug'?'augShiftsBreakdown':prefix==='oct'?'octShiftsBreakdown':prefix==='sep'?'sepShiftsBreakdown':'aShiftsBreakdown');
+    const shiftsBl=document.getElementById(prefix==='may'?'mayShiftsBreakdown':prefix==='jun'?'junShiftsBreakdown':prefix==='jul'?'julShiftsBreakdown':prefix==='aug'?'augShiftsBreakdown':prefix==='nov'?'novShiftsBreakdown':prefix==='oct'?'octShiftsBreakdown':prefix==='sep'?'sepShiftsBreakdown':'aShiftsBreakdown');
     if(shiftsBl){
       shiftsBl.innerHTML='';
       if(weekKey==='Итог мая'){
@@ -3607,9 +3836,9 @@ function renderMonth(prefix){
         const totOm=raw.reduce((s,a)=>s+(a.shifts_morn||0),0),totOe=raw.reduce((s,a)=>s+(a.shifts_eve||0),0),totO=raw.reduce((s,a)=>s+(a.shifts||0),0),totP=raw.reduce((s,a)=>s+(a.shifts_p||0),0);
         html+=`</tbody><tfoot><tr class="tfoot"><td>Итого</td><td class="r">${totOm}</td><td class="r">${totOe}</td><td class="r"><b>${totO}</b></td><td class="r">${totP}</td><td class="r">${totO+totP}</td></tr></tfoot></table></div>`;
         shiftsBl.innerHTML=html;
-      } else if((weekKey==='Итог сентября'||weekKey==='Итог октября')){
+      } else if((weekKey==='Итог сентября'||weekKey==='Итог октября'||weekKey==='Итог ноября')){
         const raw=admins;
-        let html=`<div style="margin-top:18px"><h3 style="margin-bottom:8px">Распределение смен · сентябрь 2026</h3>
+        let html=`<div style="margin-top:18px"><h3 style="margin-bottom:8px">Распределение смен · ${isNov?'ноябрь':isOct?'октябрь':'сентябрь'} 2026</h3>
 <table class="stattable"><thead><tr><th>Администратор</th><th class="r">О-утро</th><th class="r">О-вечер</th><th class="r">О (итого)</th><th class="r">П (помощник)</th><th class="r">Всего</th></tr></thead><tbody>`;
         raw.forEach(a=>{
           const om=a.shifts_morn||0,oe=a.shifts_eve||0,o=a.shifts||0,p=a.shifts_p||0;
@@ -3624,17 +3853,17 @@ function renderMonth(prefix){
   }
 
   function renderTovarCats(weekKey){
-    const body=document.getElementById(isSep?(isOct?'octTovarCatsBody':'sepTovarCatsBody'):isAug?'augTovarCatsBody':'julTovarCatsBody');
-    const lbl=document.getElementById(isSep?(isOct?'octTovarCatsLabel':'sepTovarCatsLabel'):isAug?'augTovarCatsLabel':'julTovarCatsLabel');
+    const body=document.getElementById(isSep?(isNov?'novTovarCatsBody':isOct?'octTovarCatsBody':'sepTovarCatsBody'):isAug?'augTovarCatsBody':'julTovarCatsBody');
+    const lbl=document.getElementById(isSep?(isNov?'novTovarCatsLabel':isOct?'octTovarCatsLabel':'sepTovarCatsLabel'):isAug?'augTovarCatsLabel':'julTovarCatsLabel');
     if(!body||!lbl) return;
-    const isTotal=isSep?((weekKey==='Итог сентября'||weekKey==='Итог октября')):isAug?(weekKey==='Итог августа'):(weekKey==='Итог июля');
-    lbl.textContent=isTotal?(isSep?(isOct?'Итог октября':'Итог сентября'):isAug?'Итог августа':'Итог июля'):weekKey;
+    const isTotal=isSep?((weekKey==='Итог сентября'||weekKey==='Итог октября'||weekKey==='Итог ноября')):isAug?(weekKey==='Итог августа'):(weekKey==='Итог июля');
+    lbl.textContent=isTotal?(isSep?(isNov?'Итог ноября':isOct?'Итог октября':'Итог сентября'):isAug?'Итог августа':'Итог июля'):weekKey;
 
     // ── Сбор данных ──
     const CAT_COLORS={'Еда/напитки':'#e8c87a','Косметика':'#A2B9C9','Одежда':'#5C6937','Аксессуары':'#9b89c4','Для дома':'#F0803B','Ковры':'#8d6e63','Сертификат на сумму (Никитская)':'#78909c'};
     let data={};
     if(isTotal){
-      (isSep?(isOct?OCT_WEEKS_ACTUAL:SEP_WEEKS_ACTUAL):isAug?AUG_WEEKS_ACTUAL:JUL_WEEKS_ACTUAL).forEach(wk=>{
+      (isSep?(isNov?NOV_WEEKS_ACTUAL:isOct?OCT_WEEKS_ACTUAL:SEP_WEEKS_ACTUAL):isAug?AUG_WEEKS_ACTUAL:JUL_WEEKS_ACTUAL).forEach(wk=>{
         const wData=TOVAR_CATS_WEEKLY[wk]||{};
         Object.entries(wData).forEach(([admin,cats])=>{
           if(!data[admin]) data[admin]={};
@@ -3716,11 +3945,11 @@ function renderMonth(prefix){
   }
 
   // ── INIT tabs ──
-  const MONTH_WEEKS_TABS=isSep?(isOct?OCT_ADMIN_WEEKS:SEP_ADMIN_WEEKS):isAug?AUG_ADMIN_WEEKS:isJul?JUL_ADMIN_WEEKS:isJun?JUN_ADMIN_WEEKS:[];
+  const MONTH_WEEKS_TABS=isSep?(isNov?NOV_ADMIN_WEEKS:isOct?OCT_ADMIN_WEEKS:SEP_ADMIN_WEEKS):isAug?AUG_ADMIN_WEEKS:isJul?JUL_ADMIN_WEEKS:isJun?JUN_ADMIN_WEEKS:[];
   const initWeek=isMay?'25–31 мая':(isJun||isJul||isAug||isSep)?(MONTH_WEEKS_TABS.length>0?MONTH_WEEKS_TABS[MONTH_WEEKS_TABS.length-1]:null):'27 апр–3 мая';
   if(isJun||isJul||isAug||isSep){
-    const totLabel=isSep?(isOct?'Итог октября':'Итог сентября'):isAug?'Итог августа':isJul?'Итог июля':'Итог июня';
-    const tabsContId=isSep?(isOct?'octAdminWeekTabs':'sepAdminWeekTabs'):isAug?'augAdminWeekTabs':isJul?'julAdminWeekTabs':'junAdminWeekTabs';
+    const totLabel=isSep?(isNov?'Итог ноября':isOct?'Итог октября':'Итог сентября'):isAug?'Итог августа':isJul?'Итог июля':'Итог июня';
+    const tabsContId=isSep?(isNov?'novAdminWeekTabs':isOct?'octAdminWeekTabs':'sepAdminWeekTabs'):isAug?'augAdminWeekTabs':isJul?'julAdminWeekTabs':'junAdminWeekTabs';
     const tabsCont=document.getElementById(tabsContId);
     if(tabsCont){
       if(MONTH_WEEKS_TABS.length===0){
@@ -3739,7 +3968,7 @@ function renderMonth(prefix){
     }
   }
   if(initWeek) renderAdminWeek(initWeek);
-  const tabsId=isMay?'#mayAdminWeekTabs':isJun?'#junAdminWeekTabs':isJul?'#julAdminWeekTabs':isAug?'#augAdminWeekTabs':isSep?(isOct?'#octAdminWeekTabs':'#sepAdminWeekTabs'):'#adminWeekTabs';
+  const tabsId=isMay?'#mayAdminWeekTabs':isJun?'#junAdminWeekTabs':isJul?'#julAdminWeekTabs':isAug?'#augAdminWeekTabs':isSep?(isNov?'#novAdminWeekTabs':isOct?'#octAdminWeekTabs':'#sepAdminWeekTabs'):'#adminWeekTabs';
   document.querySelectorAll(tabsId+' .wtab').forEach(btn=>{
     btn.addEventListener('click',function(){
       document.querySelectorAll(tabsId+' .wtab').forEach(b=>b.classList.remove('active'));
@@ -3754,7 +3983,8 @@ document.addEventListener('DOMContentLoaded', function(){
   // Определяем последний месяц из данных автоматически
   const n = WEEKS.labels.length - 1;
   let latestId = 'apr';
-  if(WEEKS.isOctober && WEEKS.isOctober[n]) latestId = 'oct';
+  if(WEEKS.isNovember && WEEKS.isNovember[n]) latestId = 'nov';
+  else if(WEEKS.isOctober && WEEKS.isOctober[n]) latestId = 'oct';
   else if(WEEKS.isSeptember && WEEKS.isSeptember[n]) latestId = 'sep';
   else if(WEEKS.isAugust && WEEKS.isAugust[n]) latestId = 'aug';
   else if(WEEKS.isJuly && WEEKS.isJuly[n]) latestId = 'jul';
