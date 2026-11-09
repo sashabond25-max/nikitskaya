@@ -4000,7 +4000,7 @@ document.addEventListener('DOMContentLoaded', function(){
     document.querySelectorAll('.mpane').forEach(p => p.classList.remove('active'));
     document.getElementById('month-' + latestId).classList.add('active');
     // Переключаем кнопки месяцев
-    const nameMap = {mar:'Март', apr:'Апрель', may:'Май', jun:'Июнь', jul:'Июль', aug:'Август', sep:'Сентябрь', oct:'Октябрь'};
+    const nameMap = {mar:'Март', apr:'Апрель', may:'Май', jun:'Июнь', jul:'Июль', aug:'Август', sep:'Сентябрь', oct:'Октябрь', nov:'Ноябрь'};
     document.querySelectorAll('.mbtn').forEach(b => {
       b.classList.remove('active');
       if(b.textContent.trim() === nameMap[latestId]) b.classList.add('active');
