@@ -1500,7 +1500,7 @@ td.r{text-align:right;font-variant-numeric:tabular-nums}
     </div>
   </div>
   <div class="panel">
-    <h3>Детализация по категориям</h3><div class="panel-sub">строки — категории · столбцы — недели · итог — сумма недель; первая неделя переходная, захватывает 28–30 сентября</div>
+    <h3>Детализация по категориям</h3><div class="panel-sub">строки — категории · столбцы — недели · итог — сумма недель; первая неделя переходная, захватывает 26–31 октября</div>
     <div class="twrap"><table id="novCatsTable">
       <thead><tr><th>Категория</th><th class="r">26 окт–1 ноя</th><th class="r">2–8 ноя</th><th class="r" style="background:#4a5429">Итого ноябрь</th></tr></thead>
       <tbody id="novCatsTableBody"></tbody>
@@ -3377,7 +3377,7 @@ function renderMonth(prefix){
     // Таблица посещений
     const tb=document.getElementById(prefix==='mar'?'mVisitTable':prefix==='may'?'myVisitTable':prefix==='jun'?'juVisitTable':prefix==='jul'?'julVisitTable':prefix==='aug'?'augVisitTable':prefix==='nov'?'novVisitTable':prefix==='oct'?'octVisitTable':prefix==='sep'?'sepVisitTable':'aVisitTable');
     const lastAprIdxV=aprIdx.length>0?aprIdx[aprIdx.length-1]:null;
-    const visRows=isMar?marchIdx:isMay?(lastAprIdxV!==null?[lastAprIdxV,...mayIdxV]:mayIdxV):isJun?junIdxV:isJul?(lastJunIdxV!==null?[lastJunIdxV,...julIdxV]:julIdxV):isAug?(lastJulIdxV!==null?[lastJulIdxV,...augIdxV]:augIdxV):isSep?(augIdxV.length>0?[...augIdxV,...sepIdxV]:sepIdxV):aprIdx;
+    const visRows=isMar?marchIdx:isMay?(lastAprIdxV!==null?[lastAprIdxV,...mayIdxV]:mayIdxV):isJun?junIdxV:isJul?(lastJunIdxV!==null?[lastJunIdxV,...julIdxV]:julIdxV):isAug?(lastJulIdxV!==null?[lastJulIdxV,...augIdxV]:augIdxV):isSep?(isOct?(_pv=>_pv.length>0?[_pv[_pv.length-1],...sepIdxV]:sepIdxV)(((isNov?WEEKS.isOctober:WEEKS.isSeptember)||[]).map((m,i)=>m?i:-1).filter(i=>i>=0)):(augIdxV.length>0?[...augIdxV,...sepIdxV]:sepIdxV)):aprIdx;
     const rows=visRows;
     rows.forEach((i,li)=>{
       const tr=document.createElement('tr');
