@@ -78,6 +78,12 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--g);min-heigh
 .ben-list li{position:relative;padding-left:16px;margin-bottom:9px;color:var(--g)}
 .ben-list li:last-child{margin-bottom:0}
 .ben-list li::before{content:'';position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;background:var(--o)}
+/* Shots */
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:6px}
+.shot{background:var(--bg);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.shot img{display:block;width:100%;height:auto}
+.shot-ph{display:flex;align-items:center;justify-content:center;aspect-ratio:16/10;color:var(--muted);font-size:13px;font-style:italic;background:var(--light)}
+.shot figcaption{padding:10px 14px;font-size:13px;font-weight:500;color:var(--g);border-top:1px solid var(--border)}
 /* Tables */
 .twrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:13px}
@@ -118,6 +124,7 @@ td.na{color:var(--muted);font-style:italic}
   <button class="sbtn active" data-sec="vygody">Выгоды</button>
   <button class="sbtn" data-sec="procenty">Проценты</button>
   <button class="sbtn" data-sec="tretya">Работа с рассрочками</button>
+  <button class="sbtn" data-sec="foto">Фото примеры</button>
 </nav>
 
 <main class="main">
@@ -272,6 +279,18 @@ td.na{color:var(--muted);font-style:italic}
       <li>Сейчас продажи больших абонементов на студиях проседают именно из-за того, что платить нужно всю сумму сразу.</li>
     </ul>
     <p class="memo-why">Дадим клиенту возможность оформить рассрочку — и выручка студии ощутимо пойдёт вверх.</p>
+  </section>
+  </div>
+
+  <div class="sec" id="sec-foto">
+  <section class="panel">
+    <h2>Фото примеры</h2>
+    <div class="panel-sub">Как выглядит личный кабинет рассрочек</div>
+    <div class="shots">
+      <figure class="shot"><div class="shot-ph">Фото скоро появится</div><figcaption>Главная страница</figcaption></figure>
+      <figure class="shot"><div class="shot-ph">Фото скоро появится</div><figcaption>Страница ввода заявки</figcaption></figure>
+      <figure class="shot"><div class="shot-ph">Фото скоро появится</div><figcaption>Страница ожидания оформления</figcaption></figure>
+    </div>
   </section>
   </div>
 </main>
