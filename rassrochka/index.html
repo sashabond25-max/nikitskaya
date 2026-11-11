@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Рассрочки Yoga Space x Т-Банк</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#5c6937;--g2:#4a5429;--o:#f0803b;--b:#cae7fb;
+  --bg:#fdf6f0;--light:#f0eae4;--peach:#fde6d9;
+  --sage:#aeb49c;--muted:#a5a09d;--pu:#9b89c4;
+  --white:#fff;--border:rgba(92,105,55,0.12);
+}
+body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--g);min-height:100vh;line-height:1.5}
+/* Header */
+.hd{background:var(--g);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:200;border-bottom:2px solid var(--o)}
+.hd-logo{display:flex;align-items:center;gap:10px}
+.hd-logo svg{width:30px;height:30px;flex-shrink:0}
+.hd-name{font-weight:300;font-size:14px;letter-spacing:.2em;text-transform:uppercase;color:var(--bg)}
+.hd-sub{font-size:11px;color:rgba(253,246,240,.55);letter-spacing:.05em;margin-top:1px}
+.hd-badge{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;letter-spacing:.12em;color:var(--bg);border:1px solid rgba(253,246,240,.3);border-radius:20px;padding:4px 14px;white-space:nowrap}
+/* Section nav */
+.snav{background:var(--white);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;position:relative;z-index:1;box-shadow:0 1px 6px rgba(92,105,55,.06)}
+.sbtn{padding:6px 18px;border-radius:20px;border:1px solid var(--border);background:var(--white);color:var(--g);font-family:'Jost',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .18s}
+.sbtn:hover{background:var(--bg);border-color:var(--g)}.sbtn.active{background:var(--o);color:#fff;border-color:var(--o)}
+.sec{display:none}.sec.active{display:block}
+/* Layout */
+.main{position:relative;z-index:1;padding:28px 28px 60px;max-width:1000px;margin:0 auto}
+.eyebrow{font-family:'Cormorant Garamond',serif;font-size:11px;font-weight:400;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.title{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;line-height:1.1;color:var(--g);margin-bottom:10px}
+.title span{color:var(--o);font-weight:400}
+.lead{font-size:15px;color:var(--g);opacity:.8;max-width:640px;margin-bottom:26px}
+/* Cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:24px}
+.card{background:var(--white);border-radius:14px;padding:16px 18px;border:1px solid var(--border);border-top:3px solid var(--g)}
+.card.orange{border-top-color:var(--o)}.card.blue{border-top-color:var(--b)}.card.sage{border-top-color:var(--sage)}
+.card-lbl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:7px}
+.card-val{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--g);line-height:1}
+.card-val.orange{color:var(--o)}
+.card-sub{font-size:11px;color:var(--muted);margin-top:5px}
+/* Panels */
+.panel{background:var(--white);border-radius:16px;padding:22px 24px;border:1px solid var(--border);margin-bottom:20px}
+.panel h2{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--g);margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.panel h2::before{content:'';display:block;width:3px;height:18px;background:var(--o);border-radius:2px;flex-shrink:0}
+.panel-sub{font-size:11px;color:var(--muted);letter-spacing:.04em;margin-bottom:16px;padding-left:13px}
+.panel p{font-size:14px;margin-bottom:10px}
+.panel ul,.panel ol{font-size:14px;padding-left:22px;margin-bottom:10px}
+.panel li{margin-bottom:6px}
+/* Benefits */
+.benefits{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:6px}
+.ben{background:var(--bg);border-radius:12px;padding:16px 18px;border:1px solid var(--border)}
+.ben-n{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--o);line-height:1;margin-bottom:8px}
+.ben-t{font-size:15px;font-weight:500;color:var(--g);margin-bottom:5px}
+.ben-d{font-size:13px;color:var(--g);opacity:.75}
+.ben-imp{font-size:13px;color:var(--g);background:var(--peach);border-left:3px solid var(--o);border-radius:6px;padding:8px 10px;margin-top:10px}
+/* Memo */
+.memo{background:var(--peach);border-radius:16px;padding:22px 24px;border:1px solid rgba(240,128,59,.25);border-left:4px solid var(--o);margin-bottom:20px}
+.memo-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--o);margin-bottom:8px}
+.memo-main{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;line-height:1.25;color:var(--g);margin-bottom:16px}
+.memo-ex{background:var(--white);border-radius:12px;padding:16px 18px;border:1px solid var(--border)}
+.memo-ex-lbl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:7px}
+.memo-ex p{font-size:14px;margin-bottom:6px}
+.memo-calc{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px;font-size:14px;font-weight:500;font-variant-numeric:tabular-nums}
+.memo-calc span{background:var(--bg);border-radius:8px;padding:6px 12px}
+.memo-calc .op{background:none;padding:0;color:var(--muted)}
+.memo-calc .res{background:var(--g);color:#fff}
+.memo-after{margin-top:14px;padding-top:14px;border-top:1px solid var(--light)}
+.memo-list{list-style:none;font-size:14px;margin-bottom:12px}
+.memo-list li{position:relative;padding-left:16px;margin-bottom:8px}
+.memo-list li::before{content:'';position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--o)}
+.memo-why{font-size:14px;font-weight:500;background:var(--white);border-radius:10px;padding:12px 14px;border:1px solid var(--border)}
+.know{display:grid;gap:12px;margin-top:10px}
+.ben-list{list-style:none;font-size:13px;margin-top:8px}
+.ben-list li{position:relative;padding-left:16px;margin-bottom:9px;color:var(--g)}
+.ben-list li:last-child{margin-bottom:0}
+.ben-list li::before{content:'';position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;background:var(--o)}
+/* Tables */
+.twrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{background:var(--g)}
+thead th{padding:10px 12px;text-align:left;color:#fff;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+thead th.r{text-align:right}
+tbody tr{border-bottom:1px solid var(--light)}
+tbody tr:nth-child(even){background:var(--bg)}
+td{padding:10px 12px;vertical-align:middle}
+td.r{text-align:right;font-variant-numeric:tabular-nums}
+td.tbd{color:var(--muted);font-style:italic;text-align:center}
+td.na{color:var(--muted);font-style:italic}
+/* Empty */
+.empty{display:flex;flex-direction:column;align-items:center;padding:60px 24px;text-align:center;color:var(--muted)}
+.empty-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--sage);margin-bottom:8px}
+.empty-sub{font-size:13px;color:var(--muted)}
+/* Decorative */
+.deco{position:fixed;border-radius:50%;border:1px solid rgba(92,105,55,.07);pointer-events:none;z-index:0}
+.d1{width:700px;height:700px;top:-300px;right:-200px}.d2{width:500px;height:220px;bottom:100px;left:-150px;transform:rotate(-15deg)}
+@media(max-width:600px){
+  .hd{padding:12px 16px}.snav{padding:10px 16px}.main{padding:22px 16px 48px}.title{font-size:30px}
+  .hd-name{font-size:12px;letter-spacing:.14em}
+}
+</style>
+</head>
+<body>
+<div class="deco d1"></div><div class="deco d2"></div>
+
+<header class="hd">
+  <div class="hd-logo">
+    <svg viewBox="0 0 30 30" fill="none"><ellipse cx="15" cy="15" rx="9.5" ry="9.5" stroke="#fdf6f0" stroke-width="1.1"/><ellipse cx="15" cy="15" rx="13.5" ry="5.5" stroke="#fdf6f0" stroke-width="1.1" transform="rotate(-24 15 15)"/></svg>
+    <div><div class="hd-name">Yoga Space</div><div class="hd-sub">обновлено 11 ноя 2026</div></div>
+  </div>
+  <div class="hd-badge">Рассрочка</div>
+</header>
+
+<nav class="snav">
+  <button class="sbtn active" data-sec="vygody">Выгоды</button>
+  <button class="sbtn" data-sec="procenty">Проценты</button>
+  <button class="sbtn" data-sec="tretya">Работа с рассрочками</button>
+</nav>
+
+<main class="main">
+  <div class="eyebrow">Оплата частями</div>
+  <h1 class="title">Рассрочки Yoga Space <span>x</span> Т-Банк</h1>
+
+  <!-- СОДЕРЖАНИЕ: блоки добавляются сюда -->
+  <div class="sec active" id="sec-vygody">
+  <section class="panel">
+    <h2>Выгоды работы с рассрочками для Yoga Space</h2>
+    <div class="panel-sub">Что рассрочка даёт студии</div>
+    <div class="benefits">
+      <div class="ben">
+        <div class="ben-n">01</div>
+        <div class="ben-t">Выше средний чек</div>
+        <div class="ben-d">Гость выбирает большой формат абонемента (20 занятий, безлимиты). Клиент вправе выбрать удобный срок рассрочки от 3 до 12 месяцев на любой абонемент.</div>
+      </div>
+      <div class="ben">
+        <div class="ben-n">02</div>
+        <div class="ben-t">Студия получает всю сумму сразу</div>
+        <div class="ben-d">Первый платёж клиента в банк происходит в течение 30 дней с момента оформления. День в день платить не обязательно, и это тоже комфортно. Тренировки доступны уже со следующего дня. Студия же получает деньги сразу после оформления.</div>
+      </div>
+      <div class="ben">
+        <div class="ben-n">03</div>
+        <div class="ben-t">Снимается возражение «дорого»</div>
+        <div class="ben-d">Разговор идёт не о крупной сумме, а о комфортном ежемесячном платеже. Меньше отказов и «я подумаю».</div>
+      </div>
+      <div class="ben">
+        <div class="ben-n">04</div>
+        <div class="ben-t">Гость остаётся надолго</div>
+        <div class="ben-d">Длинный абонемент формирует привычку заниматься. Выше посещаемость и больше продлений.</div>
+      </div>
+      <div class="ben">
+        <div class="ben-n">05</div>
+        <div class="ben-t">Нет риска неоплаты</div>
+        <div class="ben-d">Платежи гостя контролирует банк. Студия не ведёт долги и не напоминает об оплате. Банк сам отправляет клиенту уведомление, когда необходимо внести платёж.</div>
+        <div class="ben-imp"><strong>Важно:</strong> у клиента не обязан быть именно Т-Банк. Платёж вносится с карты любого другого банка клиента, и для гостей это большой плюс.</div>
+      </div>
+      <div class="ben">
+        <div class="ben-n">06</div>
+        <div class="ben-t">Больше продаж без скидок</div>
+        <div class="ben-d">Рассрочка помогает закрыть сделку по полной цене там, где раньше приходилось уступать в стоимости. При оформлении рассрочки наши скидки не действуют, так как клиенту предложен более выгодный формат разделения платежей.</div>
+        <div class="ben-imp"><strong>Важно:</strong> по согласованию с управляющим можно задействовать скидку First 20 % для добивки клиента.</div>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <div class="sec" id="sec-procenty">
+  <section class="memo">
+    <div class="memo-lbl">Важно для всех</div>
+    <p class="memo-main">Наше ИП ничего не выплачивает банку. Рассрочки уже идут с фиксированными процентами, которые вычитаются из оплаты клиента.</p>
+    <div class="memo-ex">
+      <div class="memo-ex-lbl">Пример</div>
+      <p>Клиент берёт абонемент за <strong>30 000 ₽</strong> на срок рассрочки <strong>3 месяца</strong>.</p>
+      <p>Из этих 30 000 ₽ по актуальным условиям банка (3 мес. — 5 %) банк вычитает 5 %.</p>
+      <div class="memo-calc"><span>30 000 ₽</span><span class="op">−</span><span>5 % (1 500 ₽)</span><span class="op">=</span><span class="res">28 500 ₽ получает студия</span></div>
+      <div class="memo-after">
+        <div class="memo-ex-lbl">После оформления</div>
+        <p>У клиента рассрочка на <strong>30 000 ₽</strong> (на 3 месяца).</p>
+        <p>Студия же после вычета получает <strong>28 500 ₽</strong>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Актуальные проценты банка на сроки рассрочек</h2>
+    <div class="panel-sub">Пример из безлимитного абонемента на 12 месяцев — 140 000 ₽</div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Срок рассрочки</th><th class="r">Процент банка</th><th class="r">Студия получает</th></tr></thead>
+        <tbody>
+          <tr><td>3 месяца</td><td class="r">5 % (7 000 ₽)</td><td class="r">133 000 ₽</td></tr>
+          <tr><td>6 месяцев</td><td class="r">8,6 % (12 040 ₽)</td><td class="r">127 960 ₽</td></tr>
+          <tr><td>10 месяцев</td><td class="r">13,1 % (18 340 ₽)</td><td class="r">121 660 ₽</td></tr>
+          <tr><td>12 месяцев</td><td class="r">15,2 % (21 280 ₽)</td><td class="r">118 720 ₽</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Прайс платежей клиента по данным срокам рассрочки</h2>
+    <div class="panel-sub">Платёж клиента в месяц. Клиент платит банку равными частями, без переплаты</div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Срок рассрочки</th><th class="r">Безлимит на 12 месяцев · 140 000 ₽</th><th class="r">Безлимит на 6 месяцев · 97 000 ₽</th></tr></thead>
+        <tbody>
+          <tr><td>3 месяца</td><td class="r">≈ 46 667 ₽</td><td class="r">≈ 32 333 ₽</td></tr>
+          <tr><td>6 месяцев</td><td class="r">≈ 23 333 ₽</td><td class="r">≈ 16 167 ₽</td></tr>
+          <tr><td>10 месяцев</td><td class="r">14 000 ₽</td><td class="r">9 700 ₽</td></tr>
+          <tr><td>12 месяцев</td><td class="r">≈ 11 667 ₽</td><td class="r">≈ 8 083 ₽</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="memo">
+    <div class="memo-lbl">Важно</div>
+    <ul class="memo-list">
+      <li>Если клиент хочет <strong>абонемент на 12 месяцев</strong>, ему доступны все форматы рассрочек: от 3 до 12 месяцев.</li>
+      <li>Если клиент делает выбор в пользу <strong>абонемента на 6 месяцев</strong>, ему доступны рассрочки на 3 и 6 месяцев максимум.</li>
+      <li>Так же с <strong>абонементом на 3 месяца</strong>: клиенту доступна рассрочка только на 3 месяца.</li>
+    </ul>
+    <p class="memo-why">Так срок рассрочки заканчивается в то же время, что и абонемент, и у клиента появляется причина приобрести новый.</p>
+  </section>
+  </div>
+
+  <div class="sec" id="sec-tretya">
+  <section class="memo">
+    <div class="memo-lbl">Важно</div>
+    <p class="memo-main">Подключение данной услуги бесплатное. Компания не ведёт никаких оплат банку — это в первую очередь сотрудничество.</p>
+    <p class="memo-why">С экономической точки зрения эта скидка (процент, который вычитает банк) — фактически комиссия банка за привлечение клиента и финансирование сделки.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Что важно знать</h2>
+    <div class="know">
+      <div class="ben">
+        <div class="ben-n">01</div>
+        <div class="ben-t">Услугу удобнее всего предоставлять в онлайн-формате</div>
+        <div class="ben-d">У нас будет общий аккаунт на ИП на каждом компьютере. Администраторы заходят в аккаунт и в режиме реального времени оформляют заявку (дело двух минут). После этого они отправляют клиенту в переписку ссылку на оформление.</div>
+        <div class="ben-imp"><strong>Важно:</strong> это делается на стойке вместе с клиентом, чтобы помочь ему в оформлении. Само оформление занимает 5 минут.</div>
+      </div>
+      <div class="ben">
+        <div class="ben-n">02</div>
+        <div class="ben-t">Много вариантов банков для одобрения</div>
+        <div class="ben-d">Клиенту отвечает не только Т-Банк, но и множество других банков.</div>
+        <div class="ben-imp"><strong>Важно:</strong> самые лучшие и удобные условия по оплате для клиентов — у Т-Банка и ОТП Банка.</div>
+      </div>
+      <div class="ben">
+        <div class="ben-n">03</div>
+        <div class="ben-t">Помощь администратора и важные пункты</div>
+        <ul class="ben-list">
+          <li>Пока клиент заполняет заявку, важно не молчать, а рассказывать больше информации о студиях.</li>
+          <li>Когда получили ответ и одобрение от Т-Банка, нужно вместе с клиентом выбрать <strong>«Базовый режим»</strong> (наглядно всему научу), чтобы не было никаких дополнительных доплат и клиент выплачивал чёткую сумму абонемента.</li>
+          <li>После одобрения и выбора формата администратору важно сказать клиенту, чтобы он нажал на кнопку <strong>«Вернуться в магазин»</strong>. Так клиент на 100 % подтверждает свою покупку, и мы получаем выплату от банка сразу на наш счёт.</li>
+          <li>После этого мы отпускаем клиента и в нашей системе добавляем ему абонемент. Проводится продажа безналичной оплатой. Или же удобно завести в 1С отдельный способ оплаты с названием <strong>«Рассрочка Т‑Банк»</strong>, чтобы мы могли отслеживать клиентов, купивших через рассрочку (это возможно в 1С).</li>
+          <li>Вносим мы сумму, которая остаётся после вычета процента. Если взяли абонемент на 30 000 ₽, мы пишем 28 500 ₽ (здесь можно будет добавить в 1С скидки по процентам банка).</li>
+        </ul>
+      </div>
+      <!-- KNOW: следующие пункты сюда -->
+    </div>
+  </section>
+
+  <section class="memo">
+    <div class="memo-lbl">Важно</div>
+    <p class="memo-main">Рассрочка не бьёт по экономике студии — она её усиливает.</p>
+    <ul class="memo-list">
+      <li>Да, банк вычитает свой процент, и с каждого такого абонемента мы получаем чуть меньше, чем указано в прайсе.</li>
+      <li>Но возможность разделить платёж делает большие абонементы доступными, и за счёт удобного формата оплаты их количество может вырасти втрое.</li>
+      <li>Сейчас продажи больших абонементов на студиях проседают именно из-за того, что платить нужно всю сумму сразу.</li>
+    </ul>
+    <p class="memo-why">Дадим клиенту возможность оформить рассрочку — и выручка студии ощутимо пойдёт вверх.</p>
+  </section>
+  </div>
+</main>
+<script>
+document.querySelectorAll('.sbtn').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.sbtn').forEach(function(x){x.classList.toggle('active',x===b)});
+    document.querySelectorAll('.sec').forEach(function(s){s.classList.toggle('active',s.id==='sec-'+b.dataset.sec)});
+    window.scrollTo(0,0);
+  });
+});
+</script>
+</body>
+</html>
