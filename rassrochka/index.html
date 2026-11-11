@@ -80,11 +80,10 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--g);min-heigh
 .ben-list li::before{content:'';position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;background:var(--o)}
 /* Shots */
 .shots{display:grid;gap:16px;margin-top:6px}
-.shot{background:var(--bg);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);align-items:start}
+.shot{background:var(--bg);border:1px solid var(--border);border-radius:12px;overflow:hidden}
 .shot img{display:block;width:100%;height:auto}
 .shot-ph{display:flex;align-items:center;justify-content:center;aspect-ratio:16/10;color:var(--muted);font-size:13px;font-style:italic;background:var(--light)}
-.shot figcaption{padding:18px 20px;font-size:13px;color:var(--g)}
-@media(max-width:760px){.shot{grid-template-columns:1fr}.shot figcaption{border-top:1px solid var(--border)}}
+.shot figcaption{padding:14px 18px;font-size:13px;color:var(--g);border-top:1px solid var(--border)}
 .shot-t{font-size:15px;font-weight:500;margin-bottom:2px}
 .shot-ph{aspect-ratio:auto;padding:36px 16px}
 /* Tables */
