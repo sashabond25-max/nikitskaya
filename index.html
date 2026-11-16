@@ -1687,7 +1687,7 @@ const TRIAL={
   labels:WEEKS.labels,isMarch:WEEKS.isMarch,
   visits:[331,310,339,338,350,359,352,297,276,311,318,320,289,286,324,322,321,294,317,317,321,313,327,313,383,293,360,306,314,310,309,282,329,330,312,340],
   trial: [32, 40, 37, 28, 39, 32, 34, 21, 27, 25, 34,29, 25,27, 22, 20,34, 36, 30, 30, 41, 27, 29, 36, 47, 43, 57, 50,39,55,40,50,29,39,34,48],
-  conversion:[3,4,4,5,5,8,9,8,8,7,9,12,5,5,13,5,10,14,8,11,10,9,7,7,14,10,9,12,8,5,12,9,4,12,5,10],
+  conversion:[3,4,4,5,5,8,9,8,8,7,9,12,5,5,13,5,10,14,8,11,10,9,7,7,14,10,9,12,8,5,12,9,4,12,5,11],
 };
 
 
@@ -1961,7 +1961,7 @@ const ADMINS_WEEKLY={
   ],
   '9–15 ноя':[
     {name:'Марина', abon:216480, tovar:6855,  shifts:3, shifts_morn:0, shifts_eve:3, shifts_p:0, newQty:1, newRub:13600},
-    {name:'Аня К',  abon:175640, tovar:3399,  shifts:2, shifts_morn:2, shifts_eve:0, shifts_p:1, newQty:0, newRub:0},
+    {name:'Аня К',  abon:175640, tovar:3399,  shifts:2, shifts_morn:2, shifts_eve:0, shifts_p:1, newQty:1, newRub:13600},
     {name:'Лера',   abon:101520, tovar:6997,  shifts:2, shifts_morn:1, shifts_eve:1, shifts_p:1, newQty:2, newRub:21200},
     {name:'Лера З', abon:89780,  tovar:12183, shifts:2, shifts_morn:2, shifts_eve:0, shifts_p:2, newQty:1, newRub:13600},
     {name:'Маша',   abon:83240,  tovar:21733, shifts:3, shifts_morn:1, shifts_eve:2, shifts_p:1, newQty:4, newRub:65100},
@@ -2039,14 +2039,14 @@ const TRIAL_PIE2_OCT={
 };
 const TRIAL_PIE_NOV={
   labels:['Маша','Марина','Настя','Лера','Аня К','Лера З','Вика'],
-  conversions:[6,4,3,3,2,1,1],
-  revenue:[80300,59100,48200,34800,21200,13600,7600],
+  conversions:[6,4,3,3,3,1,1],
+  revenue:[80300,59100,48200,34800,34800,13600,7600],
   colors:['#e8a07a','#5C6937','#e8c87a','#A2B9C9','#aeb49c','#9b89c4','#c9b89c']
 };
 const TRIAL_PIE2_NOV={
   labels:['4 занятия','8 занятий','20 занятий','Безлимит 1 мес'],
-  qty:   [8,           9,          2,           1],
-  revenue:[60800,      122400,     60600,       21000],
+  qty:   [8,           10,         2,           1],
+  revenue:[60800,      136000,     60600,       21000],
   colors: ['#5c6937','#e8c87a','#9b89c4','#F0803B']
 };
 
@@ -2236,11 +2236,11 @@ const NEWBIES_WEEKLY={
     types:[{label:'4 занятия',qty:2},{label:'8 занятий',qty:3}]
   },
   '9–15 ноя':{
-    labels:['Маша','Настя','Лера','Марина','Лера З'],
-    qty:[4,2,2,1,1],
-    revenue:[65100,34600,21200,13600,13600],
-    colors:['#e8a07a','#e8c87a','#A2B9C9','#5C6937','#9b89c4'],
-    types:[{label:'8 занятий',qty:6},{label:'4 занятия',qty:2},{label:'20 занятий',qty:1},{label:'Безлимит 1 мес',qty:1}]
+    labels:['Маша','Настя','Лера','Марина','Лера З','Аня К'],
+    qty:[4,2,2,1,1,1],
+    revenue:[65100,34600,21200,13600,13600,13600],
+    colors:['#e8a07a','#e8c87a','#A2B9C9','#5C6937','#9b89c4','#aeb49c'],
+    types:[{label:'8 занятий',qty:7},{label:'4 занятия',qty:2},{label:'20 занятий',qty:1},{label:'Безлимит 1 мес',qty:1}]
   },
 };
 const NEWBIES=NEWBIES_WEEKLY['25–31 мая'];
@@ -2639,12 +2639,12 @@ const FIRST_DAY_WEEKLY={
       {name:'Маша',   trial:17, soldQty:4, soldRub:65100, conv:24, types:[{label:'8 занятий',qty:2},{label:'4 занятия',qty:1},{label:'20 занятий',qty:1}]},
       {name:'Марина', trial:12, soldQty:1, soldRub:13600, conv:8,  types:[{label:'8 занятий',qty:1}]},
       {name:'Лера',   trial:8,  soldQty:2, soldRub:21200, conv:25, types:[{label:'8 занятий',qty:1},{label:'4 занятия',qty:1}]},
-      {name:'Аня К',  trial:7,  soldQty:0, soldRub:0,     conv:0},
+      {name:'Аня К',  trial:7,  soldQty:1, soldRub:13600, conv:14, types:[{label:'8 занятий',qty:1}]},
       {name:'Настя',  trial:3,  soldQty:2, soldRub:34600, conv:67, types:[{label:'8 занятий',qty:1},{label:'Безлимит 1 мес',qty:1}]},
       {name:'Лера З', trial:0,  soldQty:1, soldRub:13600, conv:0,  types:[{label:'8 занятий',qty:1}]},
       {name:'Вика',   trial:0,  soldQty:0, soldRub:0,     conv:0},
     ],
-    total:{trial:47, soldQty:10, soldRub:148100, conv:21}
+    total:{trial:47, soldQty:11, soldRub:161700, conv:23}
   },
 };
 const FIRST_DAY=FIRST_DAY_WEEKLY['25–31 мая'];
